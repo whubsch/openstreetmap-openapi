@@ -1,0 +1,90 @@
+# IDE and Editor files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+.project
+.settings/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Node.js (if using JavaScript/Node tools)
+node_modules/
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+.npm/
+.yarn/
+package-lock.json
+yarn.lock
+
+# Python (if using Python tools)
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.venv/
+venv/
+ENV/
+env/
+
+# OpenAPI specific
+# Generated documentation files
+dist/
+build/
+_output/
+generated/
+public/
+
+# Generated client libraries
+clients/
+
+# Temporary files
+.temp/
+.tmp/
+tmp/
+
+# Local configuration files
+.env
+.env.local
+.env.*.local
+config.local.yaml
+config.local.yml
+config.local.json
+
+# Bundled files
+bundle.yaml
+bundle.yml
+bundle.json
+merged.yaml
+merged.yml
+merged.json
+
+# Log files
+*.log
+logs/
+
+# Testing/validation output
+validation-report.json
+validation-status.json
+
+# Redocly specific (if using Redocly)
+.redocly.yaml-error.log
+.cache/
+
+# Stoplight specific (if using Stoplight)
+.stoplight/
+
+# Swagger specific (if using Swagger tools)
+.swagger-codegen/
+.swagger-codegen-ignore
+
+# Deployment-related files
+.vercel
+.netlify

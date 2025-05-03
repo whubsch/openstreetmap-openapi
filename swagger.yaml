@@ -13,23 +13,29 @@ servers:
   - url: https://master.apis.dev.openstreetmap.org
     description: Sandbox server (uses test data)
 tags:
-- name: "map"
-  description: "Operations related to map data"
-- name: "user"
-  description: "Everything on the user"
-- name: "misc"
-  description: "Meta-information on the API and the server"
+  - name: "map"
+    description: "Operations related to map data"
+  - name: "user"
+    description: "Everything on the user"
+  - name: "misc"
+    description: "Meta-information on the API and the server"
 paths:
   /api/versions:
-    $ref: './paths/api_versions.yaml'
+    $ref: "./paths/api_versions.yaml"
   /api/capabilities:
-    $ref: './paths/api_capabilities.yaml'
+    $ref: "./paths/api_capabilities.yaml"
   /api/0.6/map:
-    $ref: './paths/map_boundingBox.yaml'
+    $ref: "./paths/map_boundingBox.yaml"
   /api/0.6/permissions:
-    $ref: './paths/api_permissions.yaml'
+    $ref: "./paths/api_permissions.yaml"
   /api/0.6/user/details.json:
-    $ref: './paths/user_details.yaml'
+    $ref: "./paths/user_details.yaml"
+  /api/0.6/changeset/{id}:
+    $ref: "./paths/changeset.yaml"
+  /api/0.6/changeset/{id}.json:
+    $ref: "./paths/changeset_json.yaml"
+  /api/0.6/{element}/{id}:
+    $ref: "./paths/element.yaml"
 components:
   securitySchemes:
     basicAuth:
@@ -37,27 +43,29 @@ components:
       scheme: basic
   schemas:
     APICapabilities:
-      $ref: './schemas/APICapabilities.yaml'
+      $ref: "./schemas/APICapabilities.yaml"
     APICapabilitiesResponse:
-      $ref: './schemas/APICapabilitiesResponse.yaml'
+      $ref: "./schemas/APICapabilitiesResponse.yaml"
     APIPermission:
-      $ref: './schemas/APIPermission.yaml'
+      $ref: "./schemas/APIPermission.yaml"
     APIStatus:
-      $ref: './schemas/APIStatus.yaml'
+      $ref: "./schemas/APIStatus.yaml"
     APIVersionsResponse:
-      $ref: './schemas/APIVersionsResponse.yaml'
+      $ref: "./schemas/APIVersionsResponse.yaml"
+    Changeset:
+      $ref: "./schemas/Changeset.yaml"
     Node:
-      $ref: './schemas/Node.yaml'
+      $ref: "./schemas/Node.yaml"
     OSMResponse:
-      $ref: './schemas/OSMResponse.yaml'
+      $ref: "./schemas/OSMResponse.yaml"
     Relation:
-      $ref: './schemas/Relation.yaml'
+      $ref: "./schemas/Relation.yaml"
     User:
-      $ref: './schemas/User.yaml'
+      $ref: "./schemas/User.yaml"
     UserDetailsResponse:
-      $ref: './schemas/UserDetailsResponse.yaml'
+      $ref: "./schemas/UserDetailsResponse.yaml"
     Way:
-      $ref: './schemas/Way.yaml'
+      $ref: "./schemas/Way.yaml"
 externalDocs:
   description: "Find more information on the OSM wiki"
   url: "https://wiki.openstreetmap.org/"

@@ -1,0 +1,47 @@
+name: Deploy Swagger UI to GitHub Pages
+
+on:
+  push:
+    branches: [main] # Change to your default branch if it's not 'main'
+  workflow_dispatch: # Allows manual trigger from GitHub
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install -g @apidevtools/swagger-cli
+
+      - name: Bundle OpenAPI files
+        run: |
+          # Adjust this path to point to your main YAML file
+          swagger-cli bundle swagger.yaml -o swagger.yaml
+
+      - name: Setup Swagger UI
+        run: |
+          # Create dist directory
+          mkdir -p dist
+
+          # Download Swagger UI distribution
+          curl -L https://github.com/swagger-api/swagger-ui/archive/refs/tags/v5.19.0.tar.gz | tar xz
+
+          # Copy necessary Swagger UI files to dist
+          cp -R swagger-ui-5.19.0/dist/* dist/
+
+          # Move the bundled YAML file to the expected location
+          mv swagger.yaml .
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@4.7
+        with:
+          branch: gh-pages # The branch the action should deploy to
+          folder: . # Deploy the entire directory to preserve your index.html structure
+          clean: true # Automatically remove deleted files from the deployment branch

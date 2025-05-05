@@ -18,12 +18,12 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        run: npm install -g @apidevtools/swagger-cli
+        run: npm install -g @redocly/cli
 
       - name: Bundle OpenAPI files
         run: |
           # Adjust this path to point to your main YAML file
-          swagger-cli bundle swagger.yaml -o swagger.yaml
+          redocly bundle swagger.yaml -o swagger.yaml
 
       - name: Setup Swagger UI
         run: |

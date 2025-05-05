@@ -1,0 +1,80 @@
+openapi: "3.0.0"
+info:
+  title: "OpenStreetMap"
+  description: "This is the editing API for OpenStreetMap."
+  version: "0.6"
+  termsOfService: "https://operations.osmfoundation.org/policies/api/"
+  license:
+    name: "ISC License"
+    url: "https://github.com/bryceco/GoMap/blob/master/LICENSE.md"
+servers:
+  - url: https://api.openstreetmap.org/api/0.6
+    description: Production server (uses live data)
+  - url: https://master.apis.dev.openstreetmap.org/api/0.6
+    description: Sandbox server (uses test data)
+tags:
+  - name: "map"
+    description: "Operations related to map data"
+  - name: "user"
+    description: "Everything on the user"
+  - name: "misc"
+    description: "Meta-information on the API and the server"
+  - name: "changeset"
+    description: "Operations related to changesets"
+  - name: "element"
+    description: "Operations related to elements"
+paths:
+  /capabilities:
+    $ref: "./paths/api_capabilities.yaml"
+  /map:
+    $ref: "./paths/map_boundingBox.yaml"
+  /permissions:
+    $ref: "./paths/api_permissions.yaml"
+  /user/details.json:
+    $ref: "./paths/user_details.yaml"
+  /changeset/{id}:
+    $ref: "./paths/changeset.yaml"
+  /changeset/{id}.json:
+    $ref: "./paths/changeset_json.yaml"
+  /{element}/{id}:
+    $ref: "./paths/element.yaml"
+components:
+  securitySchemes:
+    oauth2-implementation:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://www.openstreetmap.org/oauth2/authorize
+          tokenUrl: https://www.openstreetmap.org/oauth2/token
+          scopes:
+            write_api: Read and write access to map data
+            read_prefs: Read access to user preferences
+            openid: OpenID authentication
+  schemas:
+    APICapabilities:
+      $ref: "./schemas/APICapabilities.yaml"
+    APICapabilitiesResponse:
+      $ref: "./schemas/APICapabilitiesResponse.yaml"
+    APIPermission:
+      $ref: "./schemas/APIPermission.yaml"
+    APIStatus:
+      $ref: "./schemas/APIStatus.yaml"
+    APIVersionsResponse:
+      $ref: "./schemas/APIVersionsResponse.yaml"
+    Changeset:
+      $ref: "./schemas/Changeset.yaml"
+    Node:
+      $ref: "./schemas/Node.yaml"
+    OSMResponse:
+      $ref: "./schemas/OSMResponse.yaml"
+    Relation:
+      $ref: "./schemas/Relation.yaml"
+    User:
+      $ref: "./schemas/User.yaml"
+    UserDetailsResponse:
+      $ref: "./schemas/UserDetailsResponse.yaml"
+    Way:
+      $ref: "./schemas/Way.yaml"
+externalDocs:
+  description: "Find more information on the OSM wiki"
+  url: "https://wiki.openstreetmap.org/"

@@ -1,0 +1,12 @@
+get:
+  tags:
+  - "misc"
+  summary: "Returns a list of API versions supported by this instance."
+  operationId: "getAPIVersions"
+  responses:
+    200:
+      description: "successful operation"
+      content:
+        application/xml:
+          schema:
+            $ref: '../schemas/APIVersionsResponse.yaml'

@@ -1,0 +1,33 @@
+type: object
+properties:
+  version:
+    type: string
+    example: "0.6"
+    xml:
+      attribute: true
+  copyright:
+    type: string
+    example: "OpenStreetMap and contributors"
+    xml:
+      attribute: true
+  attribution:
+    type: string
+    example: "http://www.openstreetmap.org/copyright"
+    xml:
+      attribute: true
+  generator:
+    type: string
+    example: "openstreetmap-cgimap 2.0.1 (2557192 spike-08.openstreetmap.org)"
+    xml:
+      attribute: true
+  license:
+    type: string
+    example: "http://opendatacommons.org/licenses/odbl/1-0/"
+    xml:
+      attribute: true
+required:
+  - version
+  - copyright
+  - attribution
+  - license
+  - generator

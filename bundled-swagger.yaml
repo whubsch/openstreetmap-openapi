@@ -1,0 +1,648 @@
+openapi: 3.0.0
+info:
+  title: OpenStreetMap
+  description: This is the editing API for OpenStreetMap.
+  version: '0.6'
+  termsOfService: https://operations.osmfoundation.org/policies/api/
+  license:
+    name: ISC License
+    url: https://github.com/bryceco/GoMap/blob/master/LICENSE.md
+servers:
+  - url: https://api.openstreetmap.org/api/0.6
+    description: Production server (uses live data)
+  - url: https://master.apis.dev.openstreetmap.org/api/0.6
+    description: Sandbox server (uses test data)
+tags:
+  - name: map
+    description: Operations related to map data
+  - name: user
+    description: Everything on the user
+  - name: misc
+    description: Meta-information on the API and the server
+  - name: changeset
+    description: Operations related to changesets
+  - name: element
+    description: Operations related to elements
+externalDocs:
+  description: Find more information on the OSM wiki
+  url: https://wiki.openstreetmap.org/
+paths:
+  /capabilities:
+    get:
+      tags:
+        - misc
+      summary: This API call is meant to provide information about the capabilities and limitations of the current API.
+      operationId: getAPICapabilities
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/APICapabilitiesResponse'
+  /map:
+    get:
+      tags:
+        - map
+      summary: Retrieves map data by the given bounding box.
+      description: |
+        The operation returns:
+        - All nodes that are inside a given bounding box and any relations that reference them.
+        - All ways that reference at least one node that is inside a given bounding box, any relations that reference them [the ways],
+          and any nodes outside the bounding box that the ways may reference.
+
+        - All relations that reference one of the nodes, ways or relations included due to the above rules.
+          (Does not apply recursively, see explanation below.)
+
+
+        Note that, while this operation returns those relations that reference the aforementioned nodes and ways, the reverse is not true: it does not (necessarily) return all of the nodes and ways that are referenced by these relations. This prevents unreasonably-large result sets. For example, imagine the case where:
+        - There is a relation named "England" that references every node in England.
+        - The nodes, ways, and relations are retrieved for a bounding box that covers a small portion of England.
+
+        While the result would include the nodes, ways, and relations as specified by the rules for the command,  including the "England" relation, it would (fortuitously) not include every node and way in England.  If desired, the nodes and ways referenced by the "England" relation could be retrieved by their respective IDs.
+
+        Also note that ways which intersect the bounding box but have no nodes within the bounding box will not be returned. 
+      operationId: getMapDataByBoundingBox
+      parameters:
+        - in: query
+          name: bbox
+          schema:
+            type: string
+            example: 13.377639198,52.5162399276,13.3778497142,52.5163460219
+          description: |
+            The comma-separated bounding box for which to download the data.
+
+            `left`,`bottom`,`right`,`top`, where:
+            - `left` is the longitude of the left (westernmost) side of the bounding box.
+            - `bottom` is the latitude of the bottom (southernmost) side of the bounding box.
+            - `right` is the longitude of the right (easternmost) side of the bounding box.
+            - `top` is the latitude of the top (northernmost) side of the bounding box.
+      responses:
+        '200':
+          description: The map data within the bounding box
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MapDataResponse'
+        '400':
+          description: When any of the node/way/relation limits are exceeded, in particular if the call would return more than 50'000 nodes.
+        '509':
+          description: |
+            "Error: You have downloaded too much data. Please try again later." See [Developer FAQ](https://wiki.openstreetmap.org/wiki/Developer_FAQ#I.27ve_been_blocked_from_the_API_for_downloading_too_much._Now_what.3F).
+  /permissions:
+    get:
+      tags:
+        - misc
+      summary: Returns the permissions granted to the current API connection.
+      operationId: getAPIPermissions
+      security:
+        - basicAuth: []
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                type: object
+                allOf:
+                  - $ref: '#/components/schemas/OSMResponse'
+                properties:
+                  permissions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          $ref: '#/components/schemas/APIPermission'
+                      xml:
+                        name: permission
+                    xml:
+                      wrapped: true
+                xml:
+                  wrapped: true
+                  name: osm
+  /user/details.json:
+    get:
+      tags:
+        - user
+      summary: Get the user's profile as well as their OSM messages and preferences
+      description: The messages section has been available since mid-2013.
+      operationId: getSignedInUserDetails
+      security:
+        - basicAuth: []
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetailsResponse'
+  /changeset/{id}:
+    get:
+      summary: Get a changeset
+      description: Get a changeset
+      tags:
+        - changeset
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the changeset
+          schema:
+            type: integer
+        - name: include_discussion
+          in: query
+          required: false
+          description: Include changeset discussions in the response
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: A changeset
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Changeset'
+  /changeset/{id}.json:
+    get:
+      summary: Get a JSON of the changeset
+      description: Get a changeset
+      tags:
+        - changeset
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the changeset
+          schema:
+            type: integer
+        - name: include_discussion
+          in: query
+          required: false
+          description: Include changeset discussions in the response
+          schema:
+            type: boolean
+            default: false
+      responses:
+        '200':
+          description: A changeset
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Changeset'
+  /{element}/{id}:
+    get:
+      summary: Get an element
+      description: Get an element by its ID
+      tags:
+        - element
+      parameters:
+        - name: element
+          in: path
+          required: true
+          description: Type of element to access
+          schema:
+            $ref: '#/components/schemas/MapElementType'
+        - name: id
+          in: path
+          required: true
+          description: The ID of the element
+          schema:
+            $ref: '#/components/schemas/MapElementId'
+      responses:
+        '200':
+          description: The selected element
+          content:
+            application/xml:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Relation'
+                  - $ref: '#/components/schemas/Way'
+                  - $ref: '#/components/schemas/Node'
+                discriminator:
+                  propertyName: element
+                  mapping:
+                    relation: '#/components/schemas/Relation'
+                    way: '#/components/schemas/Way'
+                    node: '#/components/schemas/Node'
+components:
+  securitySchemes:
+    oauth2-implementation:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://www.openstreetmap.org/oauth2/authorize
+          tokenUrl: https://www.openstreetmap.org/oauth2/token
+          scopes:
+            write_api: Read and write access to map data
+            read_prefs: Read access to user preferences
+            openid: OpenID authentication
+  schemas:
+    APICapabilities:
+      type: object
+      properties:
+        version:
+          type: object
+          description: The API call versions that the server will accept
+          properties:
+            minimum:
+              type: number
+              format: double
+              example: 0.6
+              xml:
+                attribute: true
+            maximum:
+              type: number
+              format: double
+              example: 0.6
+              xml:
+                attribute: true
+        area:
+          type: object
+          properties:
+            maximum:
+              type: number
+              format: double
+              description: The maximum area in square degrees that can be queried by API calls
+              example: 0.25
+              xml:
+                attribute: true
+        note_area:
+          type: object
+          properties:
+            maximum:
+              type: number
+              example: 25
+              xml:
+                attribute: true
+        tracepoints:
+          type: object
+          properties:
+            per_page:
+              type: number
+              description: The maximum number of points in a single GPS trace. (Possibly incorrect)
+              example: 5000
+              xml:
+                attribute: true
+        waynodes:
+          type: object
+          properties:
+            maximum:
+              type: number
+              description: The maximum number of nodes that a way may contain
+              example: 2000
+              xml:
+                attribute: true
+        changesets:
+          type: object
+          properties:
+            maximum_elements:
+              type: number
+              description: The maximum number of combined nodes, ways and relations that can be contained in a changeset
+              example: 10000
+              xml:
+                attribute: true
+        timeout:
+          type: object
+          properties:
+            seconds:
+              type: number
+              example: 300
+              xml:
+                attribute: true
+        status:
+          type: object
+          description: The status of the database, API and GPX API. The database field is informational, and the API/GPX-API fields indicate what the client should expect.
+          properties:
+            database:
+              $ref: '#/components/schemas/APIStatus'
+            api:
+              $ref: '#/components/schemas/APIStatus'
+            gpx:
+              $ref: '#/components/schemas/APIStatus'
+    APICapabilitiesResponse:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/OSMResponse'
+      properties:
+        api:
+          $ref: '#/components/schemas/APICapabilities'
+      xml:
+        wrapped: true
+        name: osm
+    APIPermission:
+      type: string
+      example: allow_read_prefs
+      description: |
+        Permissions:
+          * `allow_read_prefs` - Read user preferences
+          * `allow_write_prefs` - Modify user preferences
+          * `allow_write_diary` - Create diary entries, comments and make friends
+          * `allow_write_api` - Modify the map
+          * `allow_read_gpx` - Read private GPS traces
+          * `allow_write_gpx` - Upload GPS traces
+          * `allow_write_notes` - Modify notes
+      xml:
+        attribute: true
+    APIStatus:
+      type: string
+      enum:
+        - online
+        - readonly
+        - offline
+      example: online
+      description: |
+        Status:
+          * `online` - Both read and write requests work
+          * `readonly` - Only read requests work
+          * `offline` - No requests work
+      xml:
+        attribute: true
+    APIVersionsResponse:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/OSMResponse'
+      properties:
+        api:
+          type: object
+          properties:
+            version:
+              type: number
+              format: double
+              example: 0.6
+      xml:
+        wrapped: true
+        name: osm
+    Changeset:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/OSMResponse'
+      properties:
+        changeset:
+          type: object
+          properties:
+            id:
+              type: number
+              format: double
+              example: 1011123
+            created_at:
+              type: string
+              format: date-time
+              example: '2020-01-01T00:00:00Z'
+            closed_at:
+              type: string
+              format: date-time
+              example: '2020-01-01T00:00:00Z'
+            open:
+              type: boolean
+            user:
+              type: string
+              example: username
+            uid:
+              type: number
+              format: double
+            changes_count:
+              type: number
+              format: double
+            min_lat:
+              type: number
+              format: double
+            min_lon:
+              type: number
+              format: double
+            max_lat:
+              type: number
+              format: double
+            max_lon:
+              type: number
+              format: double
+            tags:
+              type: object
+          xml:
+            name: changeset
+      xml:
+        wrapped: true
+        name: osm
+    Node:
+      allOf:
+        - $ref: '#/components/schemas/MapElement'
+        - type: object
+          properties:
+            lat:
+              $ref: '#/components/schemas/Latitude'
+            lon:
+              $ref: '#/components/schemas/Longitude'
+          required:
+            - lat
+            - lon
+    OSMResponse:
+      type: object
+      properties:
+        version:
+          type: string
+          example: '0.6'
+          xml:
+            attribute: true
+        copyright:
+          type: string
+          example: OpenStreetMap and contributors
+          xml:
+            attribute: true
+        attribution:
+          type: string
+          example: http://www.openstreetmap.org/copyright
+          xml:
+            attribute: true
+        generator:
+          type: string
+          example: openstreetmap-cgimap 2.0.1 (2557192 spike-08.openstreetmap.org)
+          xml:
+            attribute: true
+        license:
+          type: string
+          example: http://opendatacommons.org/licenses/odbl/1-0/
+          xml:
+            attribute: true
+      required:
+        - version
+        - copyright
+        - attribution
+        - license
+        - generator
+    Relation:
+      allOf:
+        - $ref: '#/components/schemas/MapElement'
+        - type: object
+          properties:
+            members:
+              type: array
+              items:
+                $ref: '#/components/schemas/RelationMember'
+          required:
+            - members
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1234
+        display_name:
+          type: string
+          example: JaneDoe
+        account_created:
+          type: string
+          example: 2010-01-19T23:01:0Z
+          format: date-time
+        description:
+          type: string
+          example: |-
+            # Heading
+
+            The description can contain markdown
+        changesets:
+          type: object
+          properties:
+            count:
+              type: integer
+              example: 34
+        traces:
+          type: object
+          properties:
+            count:
+              type: integer
+              example: 2
+        messages:
+          type: object
+          properties:
+            received:
+              type: object
+              properties:
+                count:
+                  type: integer
+                  example: 2
+                unread:
+                  type: integer
+                  example: 1
+            sent:
+              type: object
+              properties:
+                count:
+                  type: integer
+                  example: 1
+    UserDetailsResponse:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/OSMResponse'
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+    Way:
+      allOf:
+        - $ref: '#/components/schemas/MapElement'
+        - type: object
+          properties:
+            nodes:
+              type: array
+              items:
+                $ref: '#/components/schemas/MapElementId'
+          required:
+            - nodes
+    Latitude:
+      type: number
+      format: double
+      minimum: -90
+      maximum: 90
+      example: 52.515785
+    Longitude:
+      type: number
+      format: double
+      minimum: -180
+      maximum: 180
+      example: 13.3776392
+    MapElementType:
+      type: string
+      enum:
+        - node
+        - way
+        - relation
+      example: node
+    MapElementId:
+      type: number
+      format: int64
+      example: 85883220
+    MapElement:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/MapElementType'
+        id:
+          $ref: '#/components/schemas/MapElementId'
+        timestamp:
+          type: string
+          format: date-time
+          example: '2015-10-01T19:36:42Z'
+        version:
+          type: number
+          example: 14
+        changeset:
+          type: number
+          format: int64
+          example: 34376083
+        user:
+          type: string
+          example: anbr
+        uid:
+          type: number
+          example: 43566
+        tags:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            building:architecture: neoclassicism
+            building:material: sandstone
+      required:
+        - type
+        - id
+        - timestamp
+        - version
+        - changeset
+        - user
+        - uid
+    RelationMember:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/MapElementType'
+        ref:
+          $ref: '#/components/schemas/MapElementId'
+        role:
+          type: string
+          example: part
+    MapDataResponse:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/OSMResponse'
+      properties:
+        bounds:
+          type: object
+          properties:
+            minlat:
+              $ref: '#/components/schemas/Latitude'
+            minlon:
+              $ref: '#/components/schemas/Longitude'
+            maxlat:
+              $ref: '#/components/schemas/Latitude'
+            maxlon:
+              $ref: '#/components/schemas/Longitude'
+        elements:
+          type: array
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/Node'
+              - $ref: '#/components/schemas/Relation'
+              - $ref: '#/components/schemas/Way'
+      xml:
+        wrapped: true
+        name: osm

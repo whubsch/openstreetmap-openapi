@@ -1,0 +1,50 @@
+type: object
+allOf:
+  - $ref: "OSMResponse.yaml"
+properties:
+  changeset:
+    type: object
+    properties:
+      id:
+        type: number
+        format: double
+        example: 1011123
+      created_at:
+        type: string
+        format: date-time
+        example: "2020-01-01T00:00:00Z"
+      closed_at:
+        type: string
+        format: date-time
+        example: "2020-01-01T00:00:00Z"
+      open:
+        type: boolean
+      user:
+        type: string
+        example: "username"
+      uid:
+        type: number
+        format: double
+      changes_count:
+        type: number
+        format: double
+      min_lat:
+        type: number
+        format: double
+      min_lon:
+        type: number
+        format: double
+      max_lat:
+        type: number
+        format: double
+      max_lon:
+        type: number
+        format: double
+      tags:
+        type: object
+    xml:
+      name: changeset
+
+xml:
+  wrapped: true
+  name: osm

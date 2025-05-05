@@ -1,0 +1,10 @@
+allOf:
+  - $ref: 'MapElement.yaml'
+  - type: object
+    properties:
+      members:
+        type: array
+        items:
+          $ref: 'RelationMember.yaml'
+    required:
+      - members

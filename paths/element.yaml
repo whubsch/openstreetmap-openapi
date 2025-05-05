@@ -1,6 +1,6 @@
 get:
-  summary: Get a changeset
-  description: Get a changeset
+  summary: Get an element
+  description: Get an element by its ID
   tags:
     - element
   parameters:

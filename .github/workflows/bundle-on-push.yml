@@ -5,6 +5,7 @@ on:
     paths:
       - 'swagger.yaml'
       - 'paths/*.yaml'
+      - 'schemas/*.yaml'
       - '.github/workflows/bundle-on-push.yml'
   workflow_dispatch:
 

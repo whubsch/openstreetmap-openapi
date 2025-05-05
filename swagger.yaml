@@ -8,9 +8,9 @@ info:
     name: "ISC License"
     url: "https://github.com/bryceco/GoMap/blob/master/LICENSE.md"
 servers:
-  - url: https://api.openstreetmap.org
+  - url: https://api.openstreetmap.org/api/0.6
     description: Production server (uses live data)
-  - url: https://master.apis.dev.openstreetmap.org
+  - url: https://master.apis.dev.openstreetmap.org/api/0.6
     description: Sandbox server (uses test data)
 tags:
   - name: "map"
@@ -19,28 +19,37 @@ tags:
     description: "Everything on the user"
   - name: "misc"
     description: "Meta-information on the API and the server"
+  - name: "changeset"
+    description: "Operations related to changesets"
+  - name: "element"
+    description: "Operations related to elements"
 paths:
-  /api/versions:
-    $ref: "./paths/api_versions.yaml"
-  /api/capabilities:
+  /capabilities:
     $ref: "./paths/api_capabilities.yaml"
-  /api/0.6/map:
+  /map:
     $ref: "./paths/map_boundingBox.yaml"
-  /api/0.6/permissions:
+  /permissions:
     $ref: "./paths/api_permissions.yaml"
-  /api/0.6/user/details.json:
+  /user/details.json:
     $ref: "./paths/user_details.yaml"
-  /api/0.6/changeset/{id}:
+  /changeset/{id}:
     $ref: "./paths/changeset.yaml"
-  /api/0.6/changeset/{id}.json:
+  /changeset/{id}.json:
     $ref: "./paths/changeset_json.yaml"
-  /api/0.6/{element}/{id}:
+  /{element}/{id}:
     $ref: "./paths/element.yaml"
 components:
   securitySchemes:
-    basicAuth:
-      type: http
-      scheme: basic
+    oauth2-implementation:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://www.openstreetmap.org/oauth2/authorize
+          tokenUrl: https://www.openstreetmap.org/oauth2/token
+          scopes:
+            write_api: Read and write access to map data
+            read_prefs: Read access to user preferences
+            openid: OpenID authentication
   schemas:
     APICapabilities:
       $ref: "./schemas/APICapabilities.yaml"

@@ -23,7 +23,7 @@ jobs:
       - name: Bundle OpenAPI files
         run: |
           # Adjust this path to point to your main YAML file
-          redocly bundle swagger.yaml -o swagger.yaml
+          redocly bundle swagger.yaml -o bundled-swagger.yaml
 
       - name: Setup Swagger UI
         run: |
@@ -36,8 +36,10 @@ jobs:
           # Copy necessary Swagger UI files to dist
           cp -R swagger-ui-5.19.0/dist/* dist/
 
-          # Move the bundled YAML file to the expected location
-          mv swagger.yaml .
+          # Copy files to the expected location
+          cp bundled-swagger.yaml dist/swagger.yaml
+          cp index.html dist/index.html
+
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4

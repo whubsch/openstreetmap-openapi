@@ -32,10 +32,14 @@ paths:
     $ref: "./paths/api_permissions.yaml"
   /user/details.json:
     $ref: "./paths/user_details.yaml"
+  /changeset/create:
+    $ref: "./paths/changeset_create.yaml"
   /changeset/{id}:
-    $ref: "./paths/changeset.yaml"
+    $ref: "./paths/changeset_base.yaml"
   /changeset/{id}.json:
     $ref: "./paths/changeset_json.yaml"
+  /changeset/{id}/close:
+    $ref: "./paths/changeset_close.yaml"
   /{element}:
     $ref: "./paths/element_base.yaml"
   /{element}/{id}:

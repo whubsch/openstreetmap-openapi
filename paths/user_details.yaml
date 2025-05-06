@@ -1,6 +1,6 @@
 get:
   tags:
-  - "user"
+    - "user"
   summary: "Get the user's profile as well as their OSM messages and preferences"
   description: "The messages section has been available since mid-2013."
   operationId: "getSignedInUserDetails"
@@ -12,4 +12,6 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../schemas/UserDetailsResponse.yaml'
+            $ref: "../schemas/UserDetailsResponse.yaml"
+    400:
+      $ref: "../responses/errors.yaml#/BadRequest"

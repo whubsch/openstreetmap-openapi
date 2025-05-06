@@ -15,8 +15,11 @@ put:
   responses:
     200:
       description: Changeset closed
-    allOf:
-      - $ref: "../responses/put_errors.yaml"
-      - $ref: "../responses/get_404.yaml"
+    404:
+      $ref: "../responses/errors.yaml#/NotFound"
+    405:
+      $ref: "../responses/errors.yaml#/MethodNotAllowed"
+    409:
+      $ref: "../responses/errors.yaml#/Conflict"
     # 404:
     #   $ref: "../responses/not_found.yaml"

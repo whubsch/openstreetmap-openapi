@@ -1,6 +1,6 @@
 get:
   tags:
-  - "misc"
+    - "misc"
   summary: "This API call is meant to provide information about the capabilities and limitations of the current API."
   operationId: "getAPICapabilities"
   security: []
@@ -10,4 +10,6 @@ get:
       content:
         application/xml:
           schema:
-            $ref: '../schemas/APICapabilitiesResponse.yaml'
+            $ref: "../schemas/APICapabilitiesResponse.yaml"
+    400:
+      $ref: "../responses/errors.yaml#/BadRequest"

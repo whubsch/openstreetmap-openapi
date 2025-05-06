@@ -25,5 +25,5 @@ get:
         application/json:
           schema:
             $ref: "../schemas/ChangesetJson.yaml"
-    # 404:
-    #   $ref: "../responses/not_found.yaml"
+    404:
+      $ref: "../responses/errors.yaml#/NotFound"

@@ -1,0 +1,24 @@
+put:
+  summary: Open a changeset
+  description: Open a changeset
+  security:
+    - oauth2-implementation: []
+  tags:
+    - changeset
+  requestBody:
+    required: true
+    content:
+      application/xml:
+        schema:
+          $ref: "../schemas/ChangesetUpload.yaml"
+  responses:
+    200:
+      description: The ID of the created changeset
+      content:
+        text/plain:
+          schema:
+            $ref: "../schemas/MapElementId.yaml"
+    400:
+      $ref: "../responses/errors.yaml#/BadRequest"
+    405:
+      $ref: "../responses/errors.yaml#/MethodNotAllowed"

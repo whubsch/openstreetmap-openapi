@@ -39,5 +39,7 @@ get:
                 relation: "../schemas/Relation.yaml"
                 way: "../schemas/Way.yaml"
                 node: "../schemas/Node.yaml"
-    # 404:
-    #   $ref: "../responses/not_found.yaml"
+    403:
+      $ref: "../responses/errors.yaml#/Forbidden"
+    404:
+      $ref: "../responses/errors.yaml#/NotFound"

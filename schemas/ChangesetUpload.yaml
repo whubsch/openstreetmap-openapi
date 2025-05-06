@@ -1,0 +1,12 @@
+type: object
+properties:
+  changeset:
+    type: object
+    properties:
+      tag:
+        $ref: "TagXml.yaml"
+    xml:
+      name: changeset
+xml:
+  wrapped: true
+  name: osm

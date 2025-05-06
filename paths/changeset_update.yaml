@@ -1,0 +1,34 @@
+summary: Update a changeset
+description: Update a changeset
+security:
+  - oauth2-implementation: []
+tags:
+  - changeset
+parameters:
+  - name: id
+    in: path
+    required: true
+    description: The ID of the changeset
+    schema:
+      type: integer
+requestBody:
+  required: true
+  content:
+    application/xml:
+      schema:
+        $ref: "../schemas/ChangesetUpload.yaml"
+responses:
+  200:
+    description: The new version of the changeset
+    content:
+      text/plain:
+        schema:
+          $ref: "../schemas/ChangesetXml.yaml"
+  400:
+    $ref: "../responses/errors.yaml#/BadRequest"
+  404:
+    $ref: "../responses/errors.yaml#/NotFound"
+  405:
+    $ref: "../responses/errors.yaml#/MethodNotAllowed"
+  409:
+    $ref: "../responses/errors.yaml#/Conflict"

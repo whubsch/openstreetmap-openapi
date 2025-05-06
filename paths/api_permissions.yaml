@@ -1,6 +1,6 @@
 get:
   tags:
-  - "misc"
+    - "misc"
   summary: "Returns the permissions granted to the current API connection."
   operationId: "getAPIPermissions"
   security:
@@ -13,7 +13,7 @@ get:
           schema:
             type: object
             allOf:
-              - $ref: '../schemas/OSMResponse.yaml'
+              - $ref: "../schemas/OSMResponse.yaml"
             properties:
               permissions:
                 type: array
@@ -21,11 +21,13 @@ get:
                   type: object
                   properties:
                     name:
-                      $ref: '../schemas/APIPermission.yaml'
+                      $ref: "../schemas/APIPermission.yaml"
                   xml:
-                    name: 'permission'
+                    name: "permission"
                 xml:
                   wrapped: true
             xml:
               wrapped: true
               name: osm
+    400:
+      $ref: "../responses/errors.yaml#/BadRequest"

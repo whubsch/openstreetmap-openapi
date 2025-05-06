@@ -24,5 +24,11 @@ responses:
       text/plain:
         schema:
           $ref: "../schemas/Version.yaml"
-  # 404:
-  #   $ref: "../responses/not_found.yaml"
+  400:
+    $ref: "../responses/errors.yaml#/BadRequest"
+  404:
+    $ref: "../responses/errors.yaml#/NotFound"
+  409:
+    $ref: "../responses/errors.yaml#/Conflict"
+  429:
+    $ref: "../responses/errors.yaml#/TooManyRequests"

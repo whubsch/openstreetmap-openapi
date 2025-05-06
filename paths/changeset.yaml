@@ -1,29 +1,28 @@
-get:
-  summary: Get a changeset
-  description: Get a changeset
-  security: []
-  tags:
-    - changeset
-  parameters:
-    - name: id
-      in: path
-      required: true
-      description: The ID of the changeset
-      schema:
-        type: integer
-    - name: include_discussion
-      in: query
-      required: false
-      description: Include changeset discussions in the response
-      schema:
-        type: boolean
-        default: false
-  responses:
-    200:
-      description: A changeset
-      content:
-        application/xml:
-          schema:
-            $ref: "../schemas/ChangesetXml.yaml"
-    # 404:
-    #   $ref: "../responses/not_found.yaml"
+summary: Get a changeset
+description: Get a changeset
+security: []
+tags:
+  - changeset
+parameters:
+  - name: id
+    in: path
+    required: true
+    description: The ID of the changeset
+    schema:
+      type: integer
+  - name: include_discussion
+    in: query
+    required: false
+    description: Include changeset discussions in the response
+    schema:
+      type: boolean
+      default: false
+responses:
+  200:
+    description: A changeset
+    content:
+      application/xml:
+        schema:
+          $ref: "../schemas/ChangesetXml.yaml"
+  404:
+    $ref: "../responses/errors.yaml#/NotFound"

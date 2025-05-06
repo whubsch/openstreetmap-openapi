@@ -41,6 +41,8 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/APICapabilitiesResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
   /map:
     get:
       tags:
@@ -123,6 +125,8 @@ paths:
                 xml:
                   wrapped: true
                   name: osm
+        '400':
+          $ref: '#/components/responses/BadRequest'
   /user/details.json:
     get:
       tags:
@@ -139,6 +143,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserDetailsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+  /changeset/create:
+    put:
+      summary: Open a changeset
+      description: Open a changeset
+      security:
+        - oauth2-implementation: []
+      tags:
+        - changeset
+      requestBody:
+        required: true
+        content:
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/ChangesetUpload'
+      responses:
+        '200':
+          description: The ID of the created changeset
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/MapElementId'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
   /changeset/{id}:
     get:
       summary: Get a changeset
@@ -167,6 +198,43 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/ChangesetXml'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      summary: Update a changeset
+      description: Update a changeset
+      security:
+        - oauth2-implementation: []
+      tags:
+        - changeset
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the changeset
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/ChangesetUpload'
+      responses:
+        '200':
+          description: The new version of the changeset
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ChangesetXml'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '409':
+          $ref: '#/components/responses/Conflict'
   /changeset/{id}.json:
     get:
       summary: Get a JSON of the changeset
@@ -195,6 +263,32 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ChangesetJson'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /changeset/{id}/close:
+    put:
+      summary: Close a changeset
+      description: Close a changeset
+      security:
+        - oauth2-implementation: []
+      tags:
+        - changeset
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The ID of the changeset
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Changeset closed
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '409':
+          $ref: '#/components/responses/Conflict'
   /{element}:
     get:
       summary: Get multiple elements
@@ -350,6 +444,14 @@ paths:
             text/plain:
               schema:
                 $ref: '#/components/schemas/Version'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
     delete:
       summary: Delete an element
       description: Delete an element by its ID
@@ -465,6 +567,10 @@ paths:
                     relation: '#/components/schemas/Relation'
                     way: '#/components/schemas/Way'
                     node: '#/components/schemas/Node'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
   /{element}/{id}/full:
     get:
       summary: Get an element and its referenced elements
@@ -932,6 +1038,19 @@ components:
           example: Added the missing highway
           xml:
             attribute: true
+    ChangesetUpload:
+      type: object
+      properties:
+        changeset:
+          type: object
+          properties:
+            tag:
+              $ref: '#/components/schemas/TagXml'
+          xml:
+            name: changeset
+      xml:
+        wrapped: true
+        name: osm
     ChangesetXml:
       type: object
       allOf:
@@ -1016,13 +1135,15 @@ components:
   responses:
     BadRequest:
       description: The request was invalid or cannot be served
-    NotFound:
-      description: The requested resource was not found
     MethodNotAllowed:
       description: The requested method is not supported for the requested resource
+    NotFound:
+      description: The requested resource was not found
     Conflict:
       description: The request conflicts with the current state of the target resource
     TooManyRequests:
       description: The user has sent too many requests in a given amount of time ("rate limiting")
     Gone:
       description: The requested resource is no longer available and will not be served
+    Forbidden:
+      description: The server understood the request but refuses to authorize it

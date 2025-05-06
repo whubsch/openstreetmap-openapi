@@ -19,17 +19,18 @@ get:
     This prevents unreasonably-large result sets. For example, imagine the case where:
 
     - There is a relation named "England" that references every node in England.
-    
+
     - The nodes, ways, and relations are retrieved for a bounding box that covers a small portion of England.
 
-    
-    While the result would include the nodes, ways, and relations as specified by the rules for the command, 
-    including the "England" relation, it would (fortuitously) not include every node and way in England. 
+
+    While the result would include the nodes, ways, and relations as specified by the rules for the command,
+    including the "England" relation, it would (fortuitously) not include every node and way in England.
     If desired, the nodes and ways referenced by the "England" relation could be retrieved by their respective IDs.
 
 
-    Also note that ways which intersect the bounding box but have no nodes within the bounding box will not be returned. 
+    Also note that ways which intersect the bounding box but have no nodes within the bounding box will not be returned.
   operationId: "getMapDataByBoundingBox"
+  security: []
   parameters:
     - in: query
       name: bbox
@@ -39,9 +40,9 @@ get:
       description: >
         The comma-separated bounding box for which to download the data.
 
-        
+
         `left`,`bottom`,`right`,`top`, where:
-        
+
         - `left` is the longitude of the left (westernmost) side of the bounding box.
 
         - `bottom` is the latitude of the bottom (southernmost) side of the bounding box.

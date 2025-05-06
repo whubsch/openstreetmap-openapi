@@ -4,7 +4,7 @@ get:
   summary: "Returns the permissions granted to the current API connection."
   operationId: "getAPIPermissions"
   security:
-    - basicAuth: []
+    - oauth2-implementation: []
   responses:
     200:
       description: "successful operation"

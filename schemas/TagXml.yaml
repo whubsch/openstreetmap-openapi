@@ -1,0 +1,12 @@
+type: object
+properties:
+  k:
+    type: string
+    example: "comment"
+    xml:
+      attribute: true
+  v:
+    type: string
+    example: "Added the missing highway"
+    xml:
+      attribute: true

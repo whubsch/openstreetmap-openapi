@@ -1,6 +1,7 @@
 get:
   summary: Get a changeset
   description: Get a changeset
+  security: []
   tags:
     - changeset
   parameters:
@@ -23,6 +24,6 @@ get:
       content:
         application/xml:
           schema:
-            $ref: "../schemas/Changeset.yaml"
+            $ref: "../schemas/ChangesetXml.yaml"
     # 404:
     #   $ref: "../responses/not_found.yaml"

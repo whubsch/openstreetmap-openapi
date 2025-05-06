@@ -1,0 +1,8 @@
+type: object
+additionalProperties:
+  type: string
+description: "A dictionary/map where both keys and values are strings"
+example:
+  comment: "Added the missing highway"
+  created_by: "JOSM/1.5"
+  source: "Bing Aerial Imagery"

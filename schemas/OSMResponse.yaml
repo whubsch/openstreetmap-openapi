@@ -12,6 +12,7 @@ properties:
       attribute: true
   attribution:
     type: string
+    format: uri
     example: "http://www.openstreetmap.org/copyright"
     xml:
       attribute: true
@@ -22,6 +23,7 @@ properties:
       attribute: true
   license:
     type: string
+    format: uri
     example: "http://opendatacommons.org/licenses/odbl/1-0/"
     xml:
       attribute: true

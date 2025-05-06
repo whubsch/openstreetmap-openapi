@@ -1,0 +1,43 @@
+get:
+  summary: Get a version of an element
+  description: Get a version of an element by its ID
+  security: []
+  tags:
+    - element
+  parameters:
+    - name: element
+      in: path
+      required: true
+      description: Type of element to access
+      schema:
+        $ref: "../schemas/MapElementType.yaml"
+    - name: id
+      in: path
+      required: true
+      description: The ID of the element
+      schema:
+        $ref: "../schemas/MapElementId.yaml"
+    - name: version
+      in: path
+      required: true
+      description: The version of the element
+      schema:
+        type: integer
+  responses:
+    200:
+      description: The selected element
+      content:
+        application/xml:
+          schema:
+            oneOf:
+              - $ref: "../schemas/Relation.yaml"
+              - $ref: "../schemas/Way.yaml"
+              - $ref: "../schemas/Node.yaml"
+            discriminator:
+              propertyName: type
+              mapping:
+                relation: "../schemas/Relation.yaml"
+                way: "../schemas/Way.yaml"
+                node: "../schemas/Node.yaml"
+    # 404:
+    #   $ref: "../responses/not_found.yaml"

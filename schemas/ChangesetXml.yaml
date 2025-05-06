@@ -1,0 +1,49 @@
+type: object
+allOf:
+  - $ref: "OSMResponse.yaml"
+properties:
+  changeset:
+    type: object
+    allOf:
+      - $ref: "Changeset.yaml"
+    properties:
+      id:
+        xml:
+          attribute: true
+      created_at:
+        xml:
+          attribute: true
+      closed_at:
+        xml:
+          attribute: true
+      open:
+        xml:
+          attribute: true
+      user:
+        xml:
+          attribute: true
+      uid:
+        xml:
+          attribute: true
+      changes_count:
+        xml:
+          attribute: true
+      min_lat:
+        xml:
+          attribute: true
+      min_lon:
+        xml:
+          attribute: true
+      max_lat:
+        xml:
+          attribute: true
+      max_lon:
+        xml:
+          attribute: true
+      tag:
+        $ref: "TagXml.yaml"
+    xml:
+      name: changeset
+xml:
+  wrapped: true
+  name: osm

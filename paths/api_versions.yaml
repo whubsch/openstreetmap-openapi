@@ -3,6 +3,7 @@ get:
   - "misc"
   summary: "Returns a list of API versions supported by this instance."
   operationId: "getAPIVersions"
+  security: []
   responses:
     200:
       description: "successful operation"

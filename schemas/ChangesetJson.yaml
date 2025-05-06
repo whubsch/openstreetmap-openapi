@@ -1,0 +1,16 @@
+type: object
+allOf:
+  - $ref: "OSMResponse.yaml"
+properties:
+  changeset:
+    type: object
+    allOf:
+      - $ref: "Changeset.yaml"
+    properties:
+      tags:
+        $ref: "TagJson.yaml"
+    xml:
+      name: changeset
+xml:
+  wrapped: true
+  name: osm

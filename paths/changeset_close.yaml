@@ -1,0 +1,22 @@
+put:
+  summary: Close a changeset
+  description: Close a changeset
+  security:
+    - oauth2-implementation: []
+  tags:
+    - changeset
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: The ID of the changeset
+      schema:
+        type: integer
+  responses:
+    200:
+      description: Changeset closed
+    allOf:
+      - $ref: "../responses/put_errors.yaml"
+      - $ref: "../responses/get_404.yaml"
+    # 404:
+    #   $ref: "../responses/not_found.yaml"

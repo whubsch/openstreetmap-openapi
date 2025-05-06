@@ -1,5 +1,5 @@
-summary: Get an element
-description: Get an element by its ID
+summary: Get multiple elements
+description: Get multiple elements of the same type by their IDs. Note that the query parameter must match the path parameter.
 security: []
 tags:
   - element
@@ -9,13 +9,32 @@ parameters:
     required: true
     description: Type of element to access
     schema:
-      $ref: "../schemas/MapElementType.yaml"
-  - name: id
-    in: path
-    required: true
-    description: The ID of the element
+      enum:
+        - nodes
+        - ways
+        - relations
+  - name: nodes
+    in: query
+    description: Nodes to access
     schema:
-      $ref: "../schemas/MapElementId.yaml"
+      type: array
+      items:
+        type: integer
+  - name: ways
+    in: query
+    description: Ways to access
+    explode: false
+    schema:
+      type: array
+      items:
+        type: integer
+  - name: relations
+    in: query
+    description: Relations to access
+    schema:
+      type: array
+      items:
+        type: integer
 responses:
   200:
     description: The selected element
@@ -32,7 +51,7 @@ responses:
               relation: "../schemas/Relation.yaml"
               way: "../schemas/Way.yaml"
               node: "../schemas/Node.yaml"
+  400:
+    $ref: '../responses/errors.yaml#/BadRequest'
   404:
     $ref: '../responses/errors.yaml#/NotFound'
-  410:
-    $ref: '../responses/errors.yaml#/Gone'

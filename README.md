@@ -19,15 +19,6 @@ The API definition is split across multiple files
 in order to improve maintainability. In order to have
 it in one single file, use `swagger-cli`, like so:
 
-    % swagger-cli bundle swagger.yaml -o _build/swagger.yaml -t yaml
+    % swagger-cli bundle swagger.yaml -o dist/swagger.yaml -t yaml
 
 Find the bundled API definition at `_build/swagger.yaml`.
-
-## Regenerating the Swift client
-
-Install `openapi-generator` and run:
-
-    % rm -rf swift5-client; openapi-generator generate -i swagger.yaml -g swift5 -c config.json -o swift5-client
-
-[1]: https://wtimme.github.io/openstreetmap-openapi/
-[2]: https://editor.swagger.io/?url=https://wtimme.github.io/openstreetmap-openapi/swagger.yaml

@@ -1,0 +1,28 @@
+summary: Create an element
+description: Create an element by its ID
+security:
+  - oauth2-implementation: []
+tags:
+  - element
+parameters:
+  - name: element
+    in: path
+    required: true
+    description: Type of element to access
+    schema:
+      $ref: "../schemas/MapElementType.yaml"
+responses:
+  200:
+    description: The created element's ID
+    content:
+      text/plain:
+        schema:
+          $ref: "../schemas/MapElementId.yaml"
+  400:
+    $ref: '../responses/errors.yaml#/BadRequest'
+  405:
+    $ref: '../responses/errors.yaml#/MethodNotAllowed'
+  409:
+    $ref: '../responses/errors.yaml#/Conflict'
+  429:
+    $ref: '../responses/errors.yaml#/TooManyRequests'

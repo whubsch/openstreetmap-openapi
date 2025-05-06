@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: OpenStreetMap
-  description: This is the editing API for OpenStreetMap.
+  description: This is an OpenAPI definition for the API to interact with the OpenStreetMap database. This is not official documentation, and should be used only for ease-of-use purposes. It is not comprehensive, and may contain errors.
   version: '0.6'
   termsOfService: https://operations.osmfoundation.org/policies/api/
   license:
@@ -24,8 +24,8 @@ tags:
   - name: element
     description: Operations related to elements
 externalDocs:
-  description: Find more information on the OSM wiki
-  url: https://wiki.openstreetmap.org/
+  description: Find the official documentation on the OSM wiki
+  url: https://wiki.openstreetmap.org/wiki/API_v0.6
 paths:
   /capabilities:
     get:
@@ -33,6 +33,7 @@ paths:
         - misc
       summary: This API call is meant to provide information about the capabilities and limitations of the current API.
       operationId: getAPICapabilities
+      security: []
       responses:
         '200':
           description: successful operation
@@ -59,10 +60,11 @@ paths:
         - There is a relation named "England" that references every node in England.
         - The nodes, ways, and relations are retrieved for a bounding box that covers a small portion of England.
 
-        While the result would include the nodes, ways, and relations as specified by the rules for the command,  including the "England" relation, it would (fortuitously) not include every node and way in England.  If desired, the nodes and ways referenced by the "England" relation could be retrieved by their respective IDs.
+        While the result would include the nodes, ways, and relations as specified by the rules for the command, including the "England" relation, it would (fortuitously) not include every node and way in England. If desired, the nodes and ways referenced by the "England" relation could be retrieved by their respective IDs.
 
-        Also note that ways which intersect the bounding box but have no nodes within the bounding box will not be returned. 
+        Also note that ways which intersect the bounding box but have no nodes within the bounding box will not be returned.
       operationId: getMapDataByBoundingBox
+      security: []
       parameters:
         - in: query
           name: bbox
@@ -96,7 +98,7 @@ paths:
       summary: Returns the permissions granted to the current API connection.
       operationId: getAPIPermissions
       security:
-        - basicAuth: []
+        - oauth2-implementation: []
       responses:
         '200':
           description: successful operation
@@ -129,7 +131,7 @@ paths:
       description: The messages section has been available since mid-2013.
       operationId: getSignedInUserDetails
       security:
-        - basicAuth: []
+        - oauth2-implementation: []
       responses:
         '200':
           description: successful operation
@@ -141,6 +143,7 @@ paths:
     get:
       summary: Get a changeset
       description: Get a changeset
+      security: []
       tags:
         - changeset
       parameters:
@@ -163,11 +166,12 @@ paths:
           content:
             application/xml:
               schema:
-                $ref: '#/components/schemas/Changeset'
+                $ref: '#/components/schemas/ChangesetXml'
   /changeset/{id}.json:
     get:
       summary: Get a JSON of the changeset
       description: Get a changeset
+      security: []
       tags:
         - changeset
       parameters:
@@ -190,11 +194,100 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Changeset'
+                $ref: '#/components/schemas/ChangesetJson'
+  /{element}:
+    get:
+      summary: Get multiple elements
+      description: Get multiple elements of the same type by their IDs. Note that the query parameter must match the path parameter.
+      security: []
+      tags:
+        - element
+      parameters:
+        - name: element
+          in: path
+          required: true
+          description: Type of element to access
+          schema:
+            enum:
+              - nodes
+              - ways
+              - relations
+        - name: nodes
+          in: query
+          description: Nodes to access
+          schema:
+            type: array
+            items:
+              type: integer
+        - name: ways
+          in: query
+          description: Ways to access
+          explode: false
+          schema:
+            type: array
+            items:
+              type: integer
+        - name: relations
+          in: query
+          description: Relations to access
+          schema:
+            type: array
+            items:
+              type: integer
+      responses:
+        '200':
+          description: The selected element
+          content:
+            application/xml:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Relation'
+                  - $ref: '#/components/schemas/Way'
+                  - $ref: '#/components/schemas/Node'
+                discriminator:
+                  propertyName: type
+                  mapping:
+                    relation: '#/components/schemas/Relation'
+                    way: '#/components/schemas/Way'
+                    node: '#/components/schemas/Node'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      summary: Create an element
+      description: Create an element by its ID
+      security:
+        - oauth2-implementation: []
+      tags:
+        - element
+      parameters:
+        - name: element
+          in: path
+          required: true
+          description: Type of element to access
+          schema:
+            $ref: '#/components/schemas/MapElementType'
+      responses:
+        '200':
+          description: The created element's ID
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/MapElementId'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '405':
+          $ref: '#/components/responses/MethodNotAllowed'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
   /{element}/{id}:
     get:
       summary: Get an element
       description: Get an element by its ID
+      security: []
       tags:
         - element
       parameters:
@@ -221,11 +314,201 @@ paths:
                   - $ref: '#/components/schemas/Way'
                   - $ref: '#/components/schemas/Node'
                 discriminator:
-                  propertyName: element
+                  propertyName: type
                   mapping:
                     relation: '#/components/schemas/Relation'
                     way: '#/components/schemas/Way'
                     node: '#/components/schemas/Node'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '410':
+          $ref: '#/components/responses/Gone'
+    put:
+      summary: Update an element
+      description: Update an element by its ID
+      security:
+        - oauth2-implementation: []
+      tags:
+        - element
+      parameters:
+        - name: element
+          in: path
+          required: true
+          description: Type of element to access
+          schema:
+            $ref: '#/components/schemas/MapElementType'
+        - name: id
+          in: path
+          required: true
+          description: The ID of the element
+          schema:
+            $ref: '#/components/schemas/MapElementId'
+      responses:
+        '200':
+          description: The new version of the element
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Version'
+    delete:
+      summary: Delete an element
+      description: Delete an element by its ID
+      security:
+        - oauth2-implementation: []
+      tags:
+        - element
+      parameters:
+        - name: element
+          in: path
+          required: true
+          description: Type of element to access
+          schema:
+            $ref: '#/components/schemas/MapElementType'
+        - name: id
+          in: path
+          required: true
+          description: The ID of the element
+          schema:
+            $ref: '#/components/schemas/MapElementId'
+      responses:
+        '200':
+          description: The new version of the element
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Version'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '410':
+          $ref: '#/components/responses/Gone'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /{element}/{id}/history:
+    get:
+      summary: Get an element's history
+      description: Get an element's history by its ID
+      security: []
+      tags:
+        - element
+      parameters:
+        - name: element
+          in: path
+          required: true
+          description: Type of element to access
+          schema:
+            $ref: '#/components/schemas/MapElementType'
+        - name: id
+          in: path
+          required: true
+          description: The ID of the element
+          schema:
+            $ref: '#/components/schemas/MapElementId'
+      responses:
+        '200':
+          description: The selected element
+          content:
+            application/xml:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Relation'
+                  - $ref: '#/components/schemas/Way'
+                  - $ref: '#/components/schemas/Node'
+                discriminator:
+                  propertyName: type
+                  mapping:
+                    relation: '#/components/schemas/Relation'
+                    way: '#/components/schemas/Way'
+                    node: '#/components/schemas/Node'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /{element}/{id}/{version}:
+    get:
+      summary: Get a version of an element
+      description: Get a version of an element by its ID
+      security: []
+      tags:
+        - element
+      parameters:
+        - name: element
+          in: path
+          required: true
+          description: Type of element to access
+          schema:
+            $ref: '#/components/schemas/MapElementType'
+        - name: id
+          in: path
+          required: true
+          description: The ID of the element
+          schema:
+            $ref: '#/components/schemas/MapElementId'
+        - name: version
+          in: path
+          required: true
+          description: The version of the element
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: The selected element
+          content:
+            application/xml:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Relation'
+                  - $ref: '#/components/schemas/Way'
+                  - $ref: '#/components/schemas/Node'
+                discriminator:
+                  propertyName: type
+                  mapping:
+                    relation: '#/components/schemas/Relation'
+                    way: '#/components/schemas/Way'
+                    node: '#/components/schemas/Node'
+  /{element}/{id}/full:
+    get:
+      summary: Get an element and its referenced elements
+      description: Get the element and all other elements referenced by it
+      security: []
+      tags:
+        - element
+      parameters:
+        - name: element
+          in: path
+          required: true
+          description: Type of element to access
+          schema:
+            type: string
+            enum:
+              - way
+              - relation
+            example: way
+        - name: id
+          in: path
+          required: true
+          description: The ID of the element
+          schema:
+            $ref: '#/components/schemas/MapElementId'
+      responses:
+        '200':
+          description: The selected element
+          content:
+            application/xml:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Relation'
+                  - $ref: '#/components/schemas/Way'
+                  - $ref: '#/components/schemas/Node'
+                discriminator:
+                  propertyName: type
+                  mapping:
+                    relation: '#/components/schemas/Relation'
+                    way: '#/components/schemas/Way'
+                    node: '#/components/schemas/Node'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '410':
+          $ref: '#/components/responses/Gone'
 components:
   securitySchemes:
     oauth2-implementation:
@@ -376,54 +659,42 @@ components:
         name: osm
     Changeset:
       type: object
-      allOf:
-        - $ref: '#/components/schemas/OSMResponse'
       properties:
-        changeset:
-          type: object
-          properties:
-            id:
-              type: number
-              format: double
-              example: 1011123
-            created_at:
-              type: string
-              format: date-time
-              example: '2020-01-01T00:00:00Z'
-            closed_at:
-              type: string
-              format: date-time
-              example: '2020-01-01T00:00:00Z'
-            open:
-              type: boolean
-            user:
-              type: string
-              example: username
-            uid:
-              type: number
-              format: double
-            changes_count:
-              type: number
-              format: double
-            min_lat:
-              type: number
-              format: double
-            min_lon:
-              type: number
-              format: double
-            max_lat:
-              type: number
-              format: double
-            max_lon:
-              type: number
-              format: double
-            tags:
-              type: object
-          xml:
-            name: changeset
-      xml:
-        wrapped: true
-        name: osm
+        id:
+          type: number
+          format: double
+          example: 1011123
+        created_at:
+          type: string
+          format: date-time
+          example: '2020-01-01T00:00:00Z'
+        closed_at:
+          type: string
+          format: date-time
+          example: '2020-01-01T00:00:00Z'
+        open:
+          type: boolean
+        user:
+          type: string
+          example: username
+        uid:
+          type: number
+          format: double
+        changes_count:
+          type: number
+          format: double
+        min_lat:
+          type: number
+          format: double
+        min_lon:
+          type: number
+          format: double
+        max_lat:
+          type: number
+          format: double
+        max_lon:
+          type: number
+          format: double
     Node:
       allOf:
         - $ref: '#/components/schemas/MapElement'
@@ -451,6 +722,7 @@ components:
             attribute: true
         attribution:
           type: string
+          format: uri
           example: http://www.openstreetmap.org/copyright
           xml:
             attribute: true
@@ -461,6 +733,7 @@ components:
             attribute: true
         license:
           type: string
+          format: uri
           example: http://opendatacommons.org/licenses/odbl/1-0/
           xml:
             attribute: true
@@ -570,7 +843,7 @@ components:
     MapElementId:
       type: number
       format: int64
-      example: 85883220
+      example: 773904916
     MapElement:
       type: object
       properties:
@@ -646,3 +919,110 @@ components:
       xml:
         wrapped: true
         name: osm
+    TagXml:
+      type: object
+      properties:
+        k:
+          type: string
+          example: comment
+          xml:
+            attribute: true
+        v:
+          type: string
+          example: Added the missing highway
+          xml:
+            attribute: true
+    ChangesetXml:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/OSMResponse'
+      properties:
+        changeset:
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Changeset'
+          properties:
+            id:
+              xml:
+                attribute: true
+            created_at:
+              xml:
+                attribute: true
+            closed_at:
+              xml:
+                attribute: true
+            open:
+              xml:
+                attribute: true
+            user:
+              xml:
+                attribute: true
+            uid:
+              xml:
+                attribute: true
+            changes_count:
+              xml:
+                attribute: true
+            min_lat:
+              xml:
+                attribute: true
+            min_lon:
+              xml:
+                attribute: true
+            max_lat:
+              xml:
+                attribute: true
+            max_lon:
+              xml:
+                attribute: true
+            tag:
+              $ref: '#/components/schemas/TagXml'
+          xml:
+            name: changeset
+      xml:
+        wrapped: true
+        name: osm
+    TagJson:
+      type: object
+      additionalProperties:
+        type: string
+      description: A dictionary/map where both keys and values are strings
+      example:
+        comment: Added the missing highway
+        created_by: JOSM/1.5
+        source: Bing Aerial Imagery
+    ChangesetJson:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/OSMResponse'
+      properties:
+        changeset:
+          type: object
+          allOf:
+            - $ref: '#/components/schemas/Changeset'
+          properties:
+            tags:
+              $ref: '#/components/schemas/TagJson'
+          xml:
+            name: changeset
+      xml:
+        wrapped: true
+        name: osm
+    Version:
+      description: The new version of the element
+      type: integer
+      minimum: 2
+      example: 4
+  responses:
+    BadRequest:
+      description: The request was invalid or cannot be served
+    NotFound:
+      description: The requested resource was not found
+    MethodNotAllowed:
+      description: The requested method is not supported for the requested resource
+    Conflict:
+      description: The request conflicts with the current state of the target resource
+    TooManyRequests:
+      description: The user has sent too many requests in a given amount of time ("rate limiting")
+    Gone:
+      description: The requested resource is no longer available and will not be served

@@ -1,0 +1,4 @@
+description: The new version of the element
+type: integer
+minimum: 2
+example: 4

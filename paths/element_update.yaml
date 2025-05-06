@@ -1,0 +1,28 @@
+summary: Update an element
+description: Update an element by its ID
+security:
+  - oauth2-implementation: []
+tags:
+  - element
+parameters:
+  - name: element
+    in: path
+    required: true
+    description: Type of element to access
+    schema:
+      $ref: "../schemas/MapElementType.yaml"
+  - name: id
+    in: path
+    required: true
+    description: The ID of the element
+    schema:
+      $ref: "../schemas/MapElementId.yaml"
+responses:
+  200:
+    description: The new version of the element
+    content:
+      text/plain:
+        schema:
+          $ref: "../schemas/Version.yaml"
+  # 404:
+  #   $ref: "../responses/not_found.yaml"

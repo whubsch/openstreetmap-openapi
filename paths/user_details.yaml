@@ -5,7 +5,7 @@ get:
   description: "The messages section has been available since mid-2013."
   operationId: "getSignedInUserDetails"
   security:
-    - basicAuth: []
+    - oauth2-implementation: []
   responses:
     200:
       description: "successful operation"

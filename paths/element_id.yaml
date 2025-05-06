@@ -1,0 +1,6 @@
+get:
+  $ref: "./element.yaml"
+put:
+  $ref: "./element_update.yaml"
+delete:
+  $ref: "./element_delete.yaml"

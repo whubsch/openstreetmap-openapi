@@ -1,7 +1,7 @@
 openapi: "3.0.0"
 info:
   title: "OpenStreetMap"
-  description: "This is the editing API for OpenStreetMap."
+  description: "This is an OpenAPI definition for the API to interact with the OpenStreetMap database. This is not official documentation, and should be used only for ease-of-use purposes. It is not comprehensive, and may contain errors."
   version: "0.6"
   termsOfService: "https://operations.osmfoundation.org/policies/api/"
   license:
@@ -36,8 +36,16 @@ paths:
     $ref: "./paths/changeset.yaml"
   /changeset/{id}.json:
     $ref: "./paths/changeset_json.yaml"
+  /{element}:
+    $ref: "./paths/element_base.yaml"
   /{element}/{id}:
-    $ref: "./paths/element.yaml"
+    $ref: "./paths/element_id.yaml"
+  /{element}/{id}/history:
+    $ref: "./paths/element_history.yaml"
+  /{element}/{id}/{version}:
+    $ref: "./paths/element_version.yaml"
+  /{element}/{id}/full:
+    $ref: "./paths/element_full.yaml"
 components:
   securitySchemes:
     oauth2-implementation:
@@ -76,5 +84,5 @@ components:
     Way:
       $ref: "./schemas/Way.yaml"
 externalDocs:
-  description: "Find more information on the OSM wiki"
-  url: "https://wiki.openstreetmap.org/"
+  description: "Find the official documentation on the OSM wiki"
+  url: "https://wiki.openstreetmap.org/wiki/API_v0.6"

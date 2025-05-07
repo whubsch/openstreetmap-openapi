@@ -40,6 +40,14 @@ paths:
     $ref: "./paths/changeset_json.yaml"
   /changeset/{id}/close:
     $ref: "./paths/changeset_close.yaml"
+  /changeset/{id}/download:
+    $ref: "./paths/changeset_download.yaml"
+  /changesets:
+    $ref: "./paths/changeset_query.yaml"
+  /changeset/{id}/comment:
+    $ref: "./paths/changeset_comment.yaml"
+  /changeset/{id}/subscribe:
+    $ref: "./paths/changeset_subscribe.yaml"
   /{element}:
     $ref: "./paths/element_base.yaml"
   /{element}/{id}:

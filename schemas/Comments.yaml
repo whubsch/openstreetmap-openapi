@@ -1,0 +1,50 @@
+# Schema for an individual comment
+CommentItem:
+  type: object
+  properties:
+    id:
+      type: integer
+      description: ID of the comment
+      example: 1234
+      xml:
+        attribute: true
+    date:
+      type: string
+      description: Timestamp of the comment
+      example: "2019-06-15 08:26:04 UTC"
+      xml:
+        attribute: true
+    uid:
+      type: integer
+      description: User ID of the commenter
+      example: 1234
+      xml:
+        attribute: true
+    user:
+      type: string
+      description: Username of the commenter
+      example: "userName"
+      xml:
+        attribute: true
+    text:
+      type: string
+      description: Plain text content of the comment
+      example: "Thanks for this great update!"
+  required:
+    - id
+    - date
+    - uid
+    - user
+    - text
+
+# Schema for the comments collection
+discussion:
+  type: object
+  properties:
+    comment:
+      type: array
+      description: List of comments
+      items:
+        $ref: '#/CommentItem'
+  required:
+    - comment

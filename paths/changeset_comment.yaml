@@ -1,0 +1,31 @@
+post:
+  summary: Create a comment
+  description: Create a comment in a changeset discussion
+  security:
+    - oauth2-implementation: []
+  tags:
+    - comment
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: The ID of the changeset
+      schema:
+        $ref: "../schemas/MapElementId.yaml"
+    - name: text
+      in: query
+      required: true
+      description: The text of the comment
+      schema:
+        type: string
+  responses:
+    200:
+      description: The created comment
+      content:
+        application/xml:
+          schema:
+            $ref: "../schemas/Comments.yaml#/discussion"
+    400:
+      $ref: '../responses/errors.yaml#/BadRequest'
+    409:
+      $ref: '../responses/errors.yaml#/Conflict'

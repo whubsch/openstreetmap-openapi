@@ -1,0 +1,50 @@
+post:
+  summary: Subscribe to a changeset discussion
+  description: Subscribe to a changeset discussion
+  security:
+    - oauth2-implementation: []
+  tags:
+    - comment
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: The ID of the changeset
+      schema:
+        $ref: "../schemas/MapElementId.yaml"
+  responses:
+    200:
+      description: The subscribed changeset
+      content:
+        application/xml:
+          schema:
+            $ref: "../schemas/Changeset.yaml"
+    400:
+      $ref: '../responses/errors.yaml#/BadRequest'
+    409:
+      $ref: '../responses/errors.yaml#/Conflict'
+delete:
+  summary: Unsubscribe from a changeset discussion
+  description: Unsubscribe from a changeset discussion
+  security:
+    - oauth2-implementation: []
+  tags:
+    - comment
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: The ID of the changeset
+      schema:
+        $ref: "../schemas/MapElementId.yaml"
+  responses:
+    200:
+      description: The unsubscribed changeset
+      content:
+        application/xml:
+          schema:
+            $ref: "../schemas/Changeset.yaml"
+    400:
+      $ref: '../responses/errors.yaml#/BadRequest'
+    409:
+      $ref: '../responses/errors.yaml#/Conflict'

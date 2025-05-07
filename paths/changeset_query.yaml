@@ -1,0 +1,98 @@
+get:
+  summary: Get changesets based on query parameters
+  description: Get changesets based on query parameters
+  security: []
+  tags:
+    - changeset
+  parameters:
+    - name: bbox
+      in: query
+      required: false
+      description: Find changesets within the given bounding box (min_lon,min_lat,max_lon,max_lat in W,S,E,N format)
+      schema:
+        type: string
+        pattern: '^-?[0-9]+(\.[0-9]+)?,-?[0-9]+(\.[0-9]+)?,-?[0-9]+(\.[0-9]+)?,-?[0-9]+(\.[0-9]+)?$'
+        example: '-0.5,51.0,0.5,52.0'
+    - name: user
+      in: query
+      required: false
+      description: Find changesets by the user with the given user id
+      schema:
+        type: integer
+    - name: display_name
+      in: query
+      required: false
+      description: Find changesets by the user with the given display name
+      schema:
+        type: string
+    - name: time
+      in: query
+      required: false
+      description: Find changesets closed after T1, or if T1,T2 format is used, find changesets that were open at some time during the range T1 to T2
+      schema:
+        type: string
+        example: '2019-01-01T00:00:00Z,2019-12-31T23:59:59Z'
+    - name: from
+      in: query
+      required: false
+      description: Find changesets created at or after this time
+      schema:
+        type: string
+        format: date-time
+    - name: to
+      in: query
+      required: false
+      description: Find changesets created before this time (requires 'from' parameter)
+      schema:
+        type: string
+        format: date-time
+    - name: open
+      in: query
+      required: false
+      description: Only find changesets that are still open (excludes closed changesets)
+      schema:
+        type: boolean
+    - name: closed
+      in: query
+      required: false
+      description: Only find changesets that are closed or have reached the element limit
+      schema:
+        type: boolean
+    - name: changesets
+      in: query
+      required: false
+      description: Find changesets with the specified ids
+      schema:
+        type: array
+        items:
+          type: integer
+      style: form
+      explode: false
+    - name: order
+      in: query
+      required: false
+      description: Sort order for changesets
+      schema:
+        type: string
+        enum: ['newest', 'oldest']
+        default: 'newest'
+    - name: limit
+      in: query
+      required: false
+      description: Specifies the maximum number of changesets returned (between 1 and 100)
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 100
+  responses:
+    200:
+      description: A changeset
+      content:
+        text/xml:
+          schema:
+            $ref: "../schemas/ChangesetXml.yaml"
+    400:
+      $ref: "../responses/errors.yaml#/BadRequest"
+    404:
+      $ref: "../responses/errors.yaml#/NotFound"

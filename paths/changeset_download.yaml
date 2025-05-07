@@ -1,0 +1,22 @@
+get:
+  summary: Download a changeset
+  description: Download a changeset
+  security: []
+  tags:
+    - changeset
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: The ID of the changeset
+      schema:
+        type: integer
+  responses:
+    200:
+      description: A changeset
+      content:
+        text/xml:
+          schema:
+            $ref: "../schemas/ChangesetXml.yaml"
+    404:
+      $ref: "../responses/errors.yaml#/NotFound"

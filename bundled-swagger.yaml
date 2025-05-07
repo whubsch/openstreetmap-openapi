@@ -127,6 +127,31 @@ paths:
                   name: osm
         '400':
           $ref: '#/components/responses/BadRequest'
+  /user/{id}:
+    get:
+      tags:
+        - user
+      summary: Get information about a user.
+      operationId: getUser
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the user to get information about.
+          required: true
+          schema:
+            type: string
+      security: []
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
   /user/details.json:
     get:
       tags:
@@ -145,6 +170,114 @@ paths:
                 $ref: '#/components/schemas/UserDetailsResponse'
         '400':
           $ref: '#/components/responses/BadRequest'
+  /user/preferences:
+    get:
+      tags:
+        - user
+      summary: Get the preferences of a user.
+      description: This endpoint returns all the preferences of a user. The user must be authenticated.
+      operationId: getUserPreferences
+      security:
+        - oauth2-implementation:
+            - read_prefs
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/osm'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /user/preferences/{preference}:
+    get:
+      tags:
+        - user
+      summary: Get a single preference of a user.
+      description: This endpoint returns a single preference of a user. The user must be authenticated.
+      operationId: getUserPreference
+      parameters:
+        - name: preference
+          in: path
+          description: The name of the preference to get.
+          required: true
+          schema:
+            type: string
+      security:
+        - oauth2-implementation:
+            - read_prefs
+      responses:
+        '200':
+          description: successful operation
+          content:
+            text/plain:
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags:
+        - user
+      summary: Set a single preference of a user.
+      description: This endpoint sets a single preference of a user. The user must be authenticated.
+      operationId: setUserPreference
+      parameters:
+        - name: preference
+          in: path
+          description: The name of the preference to set.
+          required: true
+          schema:
+            type: string
+      security:
+        - oauth2-implementation:
+            - write_api
+      requestBody:
+        content:
+          text/plain:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            text/plain:
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      tags:
+        - user
+      summary: Delete a single preference of a user.
+      description: This endpoint deletes a single preference of a user. The user must be authenticated.
+      operationId: deleteUserPreference
+      parameters:
+        - name: preference
+          in: path
+          description: The name of the preference to delete.
+          required: true
+          schema:
+            type: string
+      security:
+        - oauth2-implementation:
+            - write_api
+      responses:
+        '200':
+          description: successful operation
+          content:
+            text/plain:
+              schema:
+                type: string
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
   /changeset/create:
     put:
       summary: Open a changeset
@@ -1232,6 +1365,49 @@ components:
       xml:
         wrapped: true
         name: osm
+    osm:
+      type: object
+      required:
+        - version
+        - generator
+        - preferences
+      properties:
+        version:
+          type: string
+          description: The OSM API version
+          example: '0.6'
+          xml:
+            attribute: true
+        generator:
+          type: string
+          description: Name of the server generating this response
+          example: OpenStreetMap server
+          xml:
+            attribute: true
+        preferences:
+          type: object
+          properties:
+            preference:
+              type: array
+              description: List of user preference key-value pairs
+              items:
+                type: object
+                required:
+                  - k
+                  - v
+                properties:
+                  k:
+                    type: string
+                    description: Preference key
+                    example: somekey
+                    xml:
+                      attribute: true
+                  v:
+                    type: string
+                    description: Preference value
+                    example: somevalue
+                    xml:
+                      attribute: true
     TagXml:
       type: object
       properties:
@@ -1389,10 +1565,10 @@ components:
   responses:
     BadRequest:
       description: The request was invalid or cannot be served
-    MethodNotAllowed:
-      description: The requested method is not supported for the requested resource
     NotFound:
       description: The requested resource was not found
+    MethodNotAllowed:
+      description: The requested method is not supported for the requested resource
     Conflict:
       description: The request conflicts with the current state of the target resource
     TooManyRequests:

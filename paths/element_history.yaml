@@ -34,4 +34,4 @@ get:
                 way: "../schemas/Way.yaml"
                 node: "../schemas/Node.yaml"
     404:
-      $ref: '../responses/errors.yaml#/NotFound'
+      $ref: "../responses/errors.yaml#/NotFound"

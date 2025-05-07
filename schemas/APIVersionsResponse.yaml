@@ -1,6 +1,6 @@
 type: object
 allOf:
-  - $ref: 'OSMResponse.yaml'
+  - $ref: "OSMResponse.yaml"
 properties:
   api:
     type: object

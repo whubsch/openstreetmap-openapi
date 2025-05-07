@@ -1,8 +1,8 @@
 get:
   tags:
-    - "misc"
-  summary: "This API call is meant to provide information about the capabilities and limitations of the current API."
-  operationId: "getAPICapabilities"
+    - misc
+  summary: This API call is meant to provide information about the capabilities and limitations of the current API.
+  operationId: getAPICapabilities
   security: []
   responses:
     200:

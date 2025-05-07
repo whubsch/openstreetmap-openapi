@@ -1,11 +1,11 @@
 allOf:
-  - $ref: 'MapElement.yaml'
+  - $ref: "MapElement.yaml"
   - type: object
     properties:
       lat:
-        $ref: 'Latitude.yaml'
+        $ref: "Latitude.yaml"
       lon:
-        $ref: 'Longitude.yaml'
+        $ref: "Longitude.yaml"
     required:
       - lat
       - lon

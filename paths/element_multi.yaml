@@ -52,6 +52,6 @@ responses:
               way: "../schemas/Way.yaml"
               node: "../schemas/Node.yaml"
   400:
-    $ref: '../responses/errors.yaml#/BadRequest'
+    $ref: "../responses/errors.yaml#/BadRequest"
   404:
-    $ref: '../responses/errors.yaml#/NotFound'
+    $ref: "../responses/errors.yaml#/NotFound"

@@ -26,6 +26,6 @@ post:
           schema:
             $ref: "../schemas/Comments.yaml#/discussion"
     400:
-      $ref: '../responses/errors.yaml#/BadRequest'
+      $ref: "../responses/errors.yaml#/BadRequest"
     409:
-      $ref: '../responses/errors.yaml#/Conflict'
+      $ref: "../responses/errors.yaml#/Conflict"

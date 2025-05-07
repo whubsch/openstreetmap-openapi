@@ -26,10 +26,10 @@ responses:
           $ref: "../schemas/Version.yaml"
 
   400:
-    $ref: '../responses/errors.yaml#/BadRequest'
+    $ref: "../responses/errors.yaml#/BadRequest"
   404:
-    $ref: '../responses/errors.yaml#/NotFound'
+    $ref: "../responses/errors.yaml#/NotFound"
   410:
-    $ref: '../responses/errors.yaml#/Gone'
+    $ref: "../responses/errors.yaml#/Gone"
   429:
-    $ref: '../responses/errors.yaml#/TooManyRequests'
+    $ref: "../responses/errors.yaml#/TooManyRequests"

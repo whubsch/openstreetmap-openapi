@@ -1,0 +1,20 @@
+get:
+  tags:
+    - user
+  summary: Get the preferences of a user.
+  description: This endpoint returns all the preferences of a user. The user must be authenticated.
+  operationId: getUserPreferences
+  security:
+    - oauth2-implementation:
+        - read_prefs
+  responses:
+    200:
+      description: "successful operation"
+      content:
+        application/xml:
+          schema:
+            $ref: "../schemas/UserPreferences.yaml#/osm"
+    400:
+      $ref: "../responses/errors.yaml#/BadRequest"
+    404:
+      $ref: "../responses/errors.yaml#/NotFound"

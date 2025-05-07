@@ -12,7 +12,7 @@ get:
       schema:
         type: string
         pattern: '^-?[0-9]+(\.[0-9]+)?,-?[0-9]+(\.[0-9]+)?,-?[0-9]+(\.[0-9]+)?,-?[0-9]+(\.[0-9]+)?$'
-        example: '-0.5,51.0,0.5,52.0'
+        example: "-0.5,51.0,0.5,52.0"
     - name: user
       in: query
       required: false
@@ -31,7 +31,7 @@ get:
       description: Find changesets closed after T1, or if T1,T2 format is used, find changesets that were open at some time during the range T1 to T2
       schema:
         type: string
-        example: '2019-01-01T00:00:00Z,2019-12-31T23:59:59Z'
+        example: "2019-01-01T00:00:00Z,2019-12-31T23:59:59Z"
     - name: from
       in: query
       required: false
@@ -74,8 +74,8 @@ get:
       description: Sort order for changesets
       schema:
         type: string
-        enum: ['newest', 'oldest']
-        default: 'newest'
+        enum: ["newest", "oldest"]
+        default: "newest"
     - name: limit
       in: query
       required: false

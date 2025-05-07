@@ -45,6 +45,6 @@ discussion:
       type: array
       description: List of comments
       items:
-        $ref: '#/CommentItem'
+        $ref: "#/CommentItem"
   required:
     - comment

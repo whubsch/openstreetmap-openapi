@@ -1,6 +1,6 @@
 type: string
-enum: ['online', 'readonly', 'offline']
-example: 'online'
+enum: ["online", "readonly", "offline"]
+example: "online"
 description: >
   Status:
     * `online` - Both read and write requests work

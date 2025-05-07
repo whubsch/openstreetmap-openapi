@@ -1,5 +1,5 @@
 type: string
-example: 'allow_read_prefs'
+example: "allow_read_prefs"
 description: >
   Permissions:
     * `allow_read_prefs` - Read user preferences

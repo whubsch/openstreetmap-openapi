@@ -1,13 +1,13 @@
 type: object
 properties:
   type:
-    $ref: 'MapElementType.yaml'
+    $ref: "MapElementType.yaml"
   id:
-    $ref: 'MapElementId.yaml'
+    $ref: "MapElementId.yaml"
   timestamp:
     type: string
     format: date-time
-    example: '2015-10-01T19:36:42Z'
+    example: "2015-10-01T19:36:42Z"
   version:
     type: number
     example: 14
@@ -17,7 +17,7 @@ properties:
     example: 34376083
   user:
     type: string
-    example: 'anbr'
+    example: "anbr"
   uid:
     type: number
     example: 43566

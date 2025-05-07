@@ -30,8 +30,14 @@ paths:
     $ref: "./paths/map_boundingBox.yaml"
   /permissions:
     $ref: "./paths/api_permissions.yaml"
+  /user/{id}:
+    $ref: "./paths/user.yaml"
   /user/details.json:
     $ref: "./paths/user_details.yaml"
+  /user/preferences:
+    $ref: "./paths/user_preferences.yaml"
+  /user/preferences/{preference}:
+    $ref: "./paths/user_preferences_single.yaml"
   /changeset/create:
     $ref: "./paths/changeset_create.yaml"
   /changeset/{id}:

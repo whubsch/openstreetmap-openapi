@@ -1,0 +1,43 @@
+osm:
+  type: object
+  required:
+    - version
+    - generator
+    - preferences
+  properties:
+    version:
+      type: string
+      description: The OSM API version
+      example: "0.6"
+      xml:
+        attribute: true
+    generator:
+      type: string
+      description: Name of the server generating this response
+      example: "OpenStreetMap server"
+      xml:
+        attribute: true
+    preferences:
+      type: object
+      properties:
+        preference:
+          type: array
+          description: List of user preference key-value pairs
+          items:
+            type: object
+            required:
+              - k
+              - v
+            properties:
+              k:
+                type: string
+                description: Preference key
+                example: "somekey"
+                xml:
+                  attribute: true
+              v:
+                type: string
+                description: Preference value
+                example: "somevalue"
+                xml:
+                  attribute: true

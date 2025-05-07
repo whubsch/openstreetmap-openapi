@@ -1,9 +1,9 @@
 type: object
 properties:
   type:
-    $ref: 'MapElementType.yaml'
+    $ref: "MapElementType.yaml"
   ref:
-    $ref: 'MapElementId.yaml'
+    $ref: "MapElementId.yaml"
   role:
     type: string
-    example: 'part'
+    example: "part"

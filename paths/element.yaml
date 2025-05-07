@@ -33,6 +33,6 @@ responses:
               way: "../schemas/Way.yaml"
               node: "../schemas/Node.yaml"
   404:
-    $ref: '../responses/errors.yaml#/NotFound'
+    $ref: "../responses/errors.yaml#/NotFound"
   410:
-    $ref: '../responses/errors.yaml#/Gone'
+    $ref: "../responses/errors.yaml#/Gone"

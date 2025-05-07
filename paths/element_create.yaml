@@ -19,10 +19,10 @@ responses:
         schema:
           $ref: "../schemas/MapElementId.yaml"
   400:
-    $ref: '../responses/errors.yaml#/BadRequest'
+    $ref: "../responses/errors.yaml#/BadRequest"
   405:
-    $ref: '../responses/errors.yaml#/MethodNotAllowed'
+    $ref: "../responses/errors.yaml#/MethodNotAllowed"
   409:
-    $ref: '../responses/errors.yaml#/Conflict'
+    $ref: "../responses/errors.yaml#/Conflict"
   429:
-    $ref: '../responses/errors.yaml#/TooManyRequests'
+    $ref: "../responses/errors.yaml#/TooManyRequests"

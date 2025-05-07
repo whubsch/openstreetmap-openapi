@@ -1,6 +1,6 @@
 get:
   tags:
-  - "misc"
+    - "misc"
   summary: "Returns a list of API versions supported by this instance."
   operationId: "getAPIVersions"
   security: []
@@ -10,4 +10,4 @@ get:
       content:
         application/xml:
           schema:
-            $ref: '../schemas/APIVersionsResponse.yaml'
+            $ref: "../schemas/APIVersionsResponse.yaml"

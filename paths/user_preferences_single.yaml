@@ -1,0 +1,86 @@
+get:
+  tags:
+    - user
+  summary: Get a single preference of a user.
+  description: This endpoint returns a single preference of a user. The user must be authenticated.
+  operationId: getUserPreference
+  parameters:
+    - name: preference
+      in: path
+      description: The name of the preference to get.
+      required: true
+      schema:
+        type: string
+  security:
+    - oauth2-implementation:
+        - read_prefs
+  responses:
+    200:
+      description: "successful operation"
+      content:
+        text/plain:
+          schema:
+            type: string
+    400:
+      $ref: "../responses/errors.yaml#/BadRequest"
+    404:
+      $ref: "../responses/errors.yaml#/NotFound"
+put:
+  tags:
+    - user
+  summary: Set a single preference of a user.
+  description: This endpoint sets a single preference of a user. The user must be authenticated.
+  operationId: setUserPreference
+  parameters:
+    - name: preference
+      in: path
+      description: The name of the preference to set.
+      required: true
+      schema:
+        type: string
+  security:
+    - oauth2-implementation:
+        - write_api
+  requestBody:
+    content:
+      text/plain:
+        schema:
+          type: string
+  responses:
+    200:
+      description: "successful operation"
+      content:
+        text/plain:
+          schema:
+            type: string
+    400:
+      $ref: "../responses/errors.yaml#/BadRequest"
+    404:
+      $ref: "../responses/errors.yaml#/NotFound"
+delete:
+  tags:
+    - user
+  summary: Delete a single preference of a user.
+  description: This endpoint deletes a single preference of a user. The user must be authenticated.
+  operationId: deleteUserPreference
+  parameters:
+    - name: preference
+      in: path
+      description: The name of the preference to delete.
+      required: true
+      schema:
+        type: string
+  security:
+    - oauth2-implementation:
+        - write_api
+  responses:
+    200:
+      description: "successful operation"
+      content:
+        text/plain:
+          schema:
+            type: string
+    400:
+      $ref: "../responses/errors.yaml#/BadRequest"
+    404:
+      $ref: "../responses/errors.yaml#/NotFound"

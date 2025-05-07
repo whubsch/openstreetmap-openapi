@@ -1,6 +1,6 @@
 get:
   tags:
-  - "map"
+    - "map"
   summary: "Retrieves map data by the given bounding box."
   description: >
     The operation returns:
@@ -58,8 +58,8 @@ get:
         "Error: You have downloaded too much data. Please try again later."
         See [Developer FAQ](https://wiki.openstreetmap.org/wiki/Developer_FAQ#I.27ve_been_blocked_from_the_API_for_downloading_too_much._Now_what.3F).
     200:
-      description: 'The map data within the bounding box'
+      description: "The map data within the bounding box"
       content:
         application/json:
           schema:
-            $ref: '../schemas/MapDataResponse.yaml'
+            $ref: "../schemas/MapDataResponse.yaml"

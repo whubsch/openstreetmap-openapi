@@ -20,9 +20,9 @@ post:
           schema:
             $ref: "../schemas/Changeset.yaml"
     400:
-      $ref: '../responses/errors.yaml#/BadRequest'
+      $ref: "../responses/errors.yaml#/BadRequest"
     409:
-      $ref: '../responses/errors.yaml#/Conflict'
+      $ref: "../responses/errors.yaml#/Conflict"
 delete:
   summary: Unsubscribe from a changeset discussion
   description: Unsubscribe from a changeset discussion
@@ -45,6 +45,6 @@ delete:
           schema:
             $ref: "../schemas/Changeset.yaml"
     400:
-      $ref: '../responses/errors.yaml#/BadRequest'
+      $ref: "../responses/errors.yaml#/BadRequest"
     409:
-      $ref: '../responses/errors.yaml#/Conflict'
+      $ref: "../responses/errors.yaml#/Conflict"

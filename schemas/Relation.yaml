@@ -8,3 +8,25 @@ allOf:
           $ref: "RelationMember.yaml"
     required:
       - members
+example:
+  type: "relation"
+  id: 9876543
+  timestamp: "2022-05-10T09:15:22Z"
+  version: 12
+  changeset: 76543210
+  user: "relationbuilder"
+  uid: 54321
+  members:
+    - type: "way"
+      ref: 12345678
+      role: "outer"
+    - type: "way"
+      ref: 23456789
+      role: "inner"
+    - type: "node"
+      ref: 34567890
+      role: "label"
+  tags:
+    type: "multipolygon"
+    landuse: "residential"
+    name: "Park Estate"

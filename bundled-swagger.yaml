@@ -147,7 +147,7 @@ paths:
           content:
             application/xml:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/UserPublic'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -1153,8 +1153,24 @@ components:
           required:
             - lat
             - lon
+      example:
+        type: node
+        id: 1234567890
+        timestamp: '2022-03-15T12:45:33Z'
+        version: 5
+        changeset: 98765432
+        user: mapmaker
+        uid: 87654
+        lat: 51.5074
+        lon: -0.1278
+        tags:
+          name: Tourist Attraction
+          tourism: attraction
+          historic: monument
     OSMResponse:
       type: object
+      xml:
+        name: osm
       properties:
         version:
           type: string
@@ -1200,6 +1216,28 @@ components:
                 $ref: '#/components/schemas/RelationMember'
           required:
             - members
+      example:
+        type: relation
+        id: 9876543
+        timestamp: '2022-05-10T09:15:22Z'
+        version: 12
+        changeset: 76543210
+        user: relationbuilder
+        uid: 54321
+        members:
+          - type: way
+            ref: 12345678
+            role: outer
+          - type: way
+            ref: 23456789
+            role: inner
+          - type: node
+            ref: 34567890
+            role: label
+        tags:
+          type: multipolygon
+          landuse: residential
+          name: Park Estate
     User:
       type: object
       properties:
@@ -1267,6 +1305,23 @@ components:
                 $ref: '#/components/schemas/MapElementId'
           required:
             - nodes
+      example:
+        type: way
+        id: 987654321
+        timestamp: '2022-04-18T14:22:11Z'
+        version: 8
+        changeset: 87654321
+        user: roadmapper
+        uid: 76543
+        nodes:
+          - 123456789
+          - 234567890
+          - 345678901
+          - 456789012
+        tags:
+          highway: residential
+          name: Main Street
+          maxspeed: '30'
     Latitude:
       type: number
       format: double
@@ -1365,6 +1420,127 @@ components:
       xml:
         wrapped: true
         name: osm
+    UserPublic:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/OSMResponse'
+      properties:
+        user:
+          type: object
+          required:
+            - id
+            - display_name
+            - account_created
+          xml:
+            name: user
+          properties:
+            id:
+              type: integer
+              description: Unique identifier for the user
+              example: 12023
+              xml:
+                attribute: true
+            display_name:
+              type: string
+              description: The username displayed in the interface
+              example: jbpbis
+              xml:
+                attribute: true
+            account_created:
+              type: string
+              format: date-time
+              description: Timestamp when the account was created
+              example: '2007-08-16T01:35:56Z'
+              xml:
+                attribute: true
+            description:
+              type: string
+              description: User's profile description
+              example: ''
+            contributor-terms:
+              type: object
+              properties:
+                agreed:
+                  type: boolean
+                  description: Whether the user has agreed to the contributor terms
+                  example: false
+                  xml:
+                    attribute: true
+                version:
+                  type: string
+                  description: The version of the contributor terms
+                  example: '0.6'
+                  xml:
+                    name: version
+            img:
+              type: object
+              properties:
+                href:
+                  type: string
+                  format: uri
+                  description: URL to the user's avatar image
+                  example: http://www.gravatar.com/avatar/c8c86cd15f60ecca66ce2b10cb6b9a00.jpg?s=256&d=http%3A%2F%2Fwww.openstreetmap.org%2Fassets%2Fusers%2Fimages%2Flarge-39c3a9dc4e778311af6b70ddcf447b58.png
+                  xml:
+                    attribute: true
+            roles:
+              type: object
+              description: Special roles assigned to the user
+              properties:
+                moderator:
+                  type: object
+                  description: User has moderator privileges
+                  nullable: true
+            changesets:
+              type: object
+              properties:
+                count:
+                  type: integer
+                  description: Number of changesets created by the user
+                  example: 1
+                  xml:
+                    attribute: true
+            traces:
+              type: object
+              properties:
+                count:
+                  type: integer
+                  description: Number of GPS traces uploaded by the user
+                  example: 0
+                  xml:
+                    attribute: true
+            blocks:
+              type: object
+              properties:
+                received:
+                  type: object
+                  properties:
+                    count:
+                      type: integer
+                      description: Total number of blocks received by the user
+                      example: 0
+                      xml:
+                        attribute: true
+                    active:
+                      type: integer
+                      description: Number of active blocks received by the user
+                      example: 0
+                      xml:
+                        attribute: true
+                issued:
+                  type: object
+                  properties:
+                    count:
+                      type: integer
+                      description: Total number of blocks issued by the user
+                      example: 68
+                      xml:
+                        attribute: true
+                    active:
+                      type: integer
+                      description: Number of active blocks issued by the user
+                      example: 45
+                      xml:
+                        attribute: true
     osm:
       type: object
       required:

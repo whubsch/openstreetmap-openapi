@@ -9,3 +9,17 @@ allOf:
     required:
       - lat
       - lon
+example:
+  type: "node"
+  id: 1234567890
+  timestamp: "2022-03-15T12:45:33Z"
+  version: 5
+  changeset: 98765432
+  user: "mapmaker"
+  uid: 87654
+  lat: 51.5074
+  lon: -0.1278
+  tags:
+    name: "Tourist Attraction"
+    tourism: "attraction"
+    historic: "monument"

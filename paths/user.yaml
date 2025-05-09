@@ -17,7 +17,7 @@ get:
       content:
         application/xml:
           schema:
-            $ref: "../schemas/User.yaml"
+            $ref: "../schemas/UserPublic.yaml"
     400:
       $ref: "../responses/errors.yaml#/BadRequest"
     404:

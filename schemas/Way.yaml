@@ -8,3 +8,20 @@ allOf:
           $ref: "MapElementId.yaml"
     required:
       - nodes
+example:
+  type: "way"
+  id: 987654321
+  timestamp: "2022-04-18T14:22:11Z"
+  version: 8
+  changeset: 87654321
+  user: "roadmapper"
+  uid: 76543
+  nodes:
+    - 123456789
+    - 234567890
+    - 345678901
+    - 456789012
+  tags:
+    highway: "residential"
+    name: "Main Street"
+    maxspeed: "30"

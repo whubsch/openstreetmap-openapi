@@ -1,7 +1,7 @@
 summary: Update an element
 description: Update an element by its ID
 security:
-  - oauth2-implementation: []
+  - oauth2: []
 tags:
   - element
 parameters:

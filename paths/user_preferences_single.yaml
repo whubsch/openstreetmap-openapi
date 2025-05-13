@@ -12,7 +12,7 @@ get:
       schema:
         type: string
   security:
-    - oauth2-implementation:
+    - oauth2:
         - read_prefs
   responses:
     200:
@@ -39,7 +39,7 @@ put:
       schema:
         type: string
   security:
-    - oauth2-implementation:
+    - oauth2:
         - write_api
   requestBody:
     content:
@@ -71,7 +71,7 @@ delete:
       schema:
         type: string
   security:
-    - oauth2-implementation:
+    - oauth2:
         - write_api
   responses:
     200:

@@ -2,7 +2,7 @@ post:
   summary: Subscribe to a changeset discussion
   description: Subscribe to a changeset discussion
   security:
-    - oauth2-implementation: []
+    - oauth2: []
   tags:
     - comment
   parameters:
@@ -27,7 +27,7 @@ delete:
   summary: Unsubscribe from a changeset discussion
   description: Unsubscribe from a changeset discussion
   security:
-    - oauth2-implementation: []
+    - oauth2: []
   tags:
     - comment
   parameters:

@@ -1,7 +1,7 @@
 summary: Delete an element
 description: Delete an element by its ID
 security:
-  - oauth2-implementation: []
+  - oauth2: []
 tags:
   - element
 parameters:

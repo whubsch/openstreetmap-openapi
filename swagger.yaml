@@ -66,16 +66,22 @@ paths:
     $ref: "./paths/element_full.yaml"
 components:
   securitySchemes:
-    oauth2-implementation:
+    oauth2:
       type: oauth2
+      description: "OpenStreetMap OAuth 2.0 authentication. client_id is `bUv_hf4bWtT_fuERFncmXfEs70id3ugUYUBitVGSCD8`"
       flows:
-        authorizationCode:
+        implicit:
           authorizationUrl: https://www.openstreetmap.org/oauth2/authorize
-          tokenUrl: https://www.openstreetmap.org/oauth2/token
           scopes:
-            write_api: Read and write access to map data
-            read_prefs: Read access to user preferences
-            openid: OpenID authentication
+            $ref: "./schemas/APIScopes.yaml"
+    oauth2-dev:
+      type: oauth2
+      description: "OpenStreetMap OAuth 2.0 authentication for development server"
+      flows:
+        implicit:
+          authorizationUrl: https://master.apis.dev.openstreetmap.org/oauth2/authorize
+          scopes:
+            $ref: "./schemas/APIScopes.yaml"
   schemas:
     APICapabilities:
       $ref: "./schemas/APICapabilities.yaml"

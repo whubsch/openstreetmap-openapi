@@ -2,7 +2,7 @@ post:
   summary: Create a comment
   description: Create a comment in a changeset discussion
   security:
-    - oauth2-implementation: []
+    - oauth2: []
   tags:
     - comment
   parameters:

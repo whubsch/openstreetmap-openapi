@@ -2,7 +2,7 @@ put:
   summary: Open a changeset
   description: Open a changeset
   security:
-    - oauth2-implementation: []
+    - oauth2: []
   tags:
     - changeset
   requestBody:

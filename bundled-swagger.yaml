@@ -100,7 +100,7 @@ paths:
       summary: Returns the permissions granted to the current API connection.
       operationId: getAPIPermissions
       security:
-        - oauth2-implementation: []
+        - oauth2: []
       responses:
         '200':
           description: successful operation
@@ -160,7 +160,7 @@ paths:
       description: The messages section has been available since mid-2013.
       operationId: getSignedInUserDetails
       security:
-        - oauth2-implementation: []
+        - oauth2: []
       responses:
         '200':
           description: successful operation
@@ -178,7 +178,7 @@ paths:
       description: This endpoint returns all the preferences of a user. The user must be authenticated.
       operationId: getUserPreferences
       security:
-        - oauth2-implementation:
+        - oauth2:
             - read_prefs
       responses:
         '200':
@@ -206,7 +206,7 @@ paths:
           schema:
             type: string
       security:
-        - oauth2-implementation:
+        - oauth2:
             - read_prefs
       responses:
         '200':
@@ -233,7 +233,7 @@ paths:
           schema:
             type: string
       security:
-        - oauth2-implementation:
+        - oauth2:
             - write_api
       requestBody:
         content:
@@ -265,7 +265,7 @@ paths:
           schema:
             type: string
       security:
-        - oauth2-implementation:
+        - oauth2:
             - write_api
       responses:
         '200':
@@ -283,7 +283,7 @@ paths:
       summary: Open a changeset
       description: Open a changeset
       security:
-        - oauth2-implementation: []
+        - oauth2: []
       tags:
         - changeset
       requestBody:
@@ -337,7 +337,7 @@ paths:
       summary: Update a changeset
       description: Update a changeset
       security:
-        - oauth2-implementation: []
+        - oauth2: []
       tags:
         - changeset
       parameters:
@@ -403,7 +403,7 @@ paths:
       summary: Close a changeset
       description: Close a changeset
       security:
-        - oauth2-implementation: []
+        - oauth2: []
       tags:
         - changeset
       parameters:
@@ -551,7 +551,7 @@ paths:
       summary: Create a comment
       description: Create a comment in a changeset discussion
       security:
-        - oauth2-implementation: []
+        - oauth2: []
       tags:
         - comment
       parameters:
@@ -583,7 +583,7 @@ paths:
       summary: Subscribe to a changeset discussion
       description: Subscribe to a changeset discussion
       security:
-        - oauth2-implementation: []
+        - oauth2: []
       tags:
         - comment
       parameters:
@@ -608,7 +608,7 @@ paths:
       summary: Unsubscribe from a changeset discussion
       description: Unsubscribe from a changeset discussion
       security:
-        - oauth2-implementation: []
+        - oauth2: []
       tags:
         - comment
       parameters:
@@ -692,7 +692,7 @@ paths:
       summary: Create an element
       description: Create an element by its ID
       security:
-        - oauth2-implementation: []
+        - oauth2: []
       tags:
         - element
       parameters:
@@ -761,7 +761,7 @@ paths:
       summary: Update an element
       description: Update an element by its ID
       security:
-        - oauth2-implementation: []
+        - oauth2: []
       tags:
         - element
       parameters:
@@ -796,7 +796,7 @@ paths:
       summary: Delete an element
       description: Delete an element by its ID
       security:
-        - oauth2-implementation: []
+        - oauth2: []
       tags:
         - element
       parameters:
@@ -957,16 +957,46 @@ paths:
           $ref: '#/components/responses/Gone'
 components:
   securitySchemes:
-    oauth2-implementation:
+    oauth2:
       type: oauth2
+      description: OpenStreetMap OAuth 2.0 authentication. client_id is `bUv_hf4bWtT_fuERFncmXfEs70id3ugUYUBitVGSCD8`
       flows:
-        authorizationCode:
+        implicit:
           authorizationUrl: https://www.openstreetmap.org/oauth2/authorize
-          tokenUrl: https://www.openstreetmap.org/oauth2/token
           scopes:
-            write_api: Read and write access to map data
-            read_prefs: Read access to user preferences
-            openid: OpenID authentication
+            read_prefs: Read user preferences
+            write_prefs: Modify user preferences
+            write_diary: Create diary entries and comments
+            write_api: Modify the map
+            write_changeset_comments: Comment on changesets
+            read_gpx: Read private GPS traces
+            write_gpx: Upload GPS traces
+            write_notes: Modify notes
+            write_redactions: Redact map data
+            write_blocks: Create and revoke user blocks
+            consume_messages: Read, update status and delete user messages
+            send_messages: Send private messages to other users
+            openid: Sign in using OpenStreetMap
+    oauth2-dev:
+      type: oauth2
+      description: OpenStreetMap OAuth 2.0 authentication for development server
+      flows:
+        implicit:
+          authorizationUrl: https://master.apis.dev.openstreetmap.org/oauth2/authorize
+          scopes:
+            read_prefs: Read user preferences
+            write_prefs: Modify user preferences
+            write_diary: Create diary entries and comments
+            write_api: Modify the map
+            write_changeset_comments: Comment on changesets
+            read_gpx: Read private GPS traces
+            write_gpx: Upload GPS traces
+            write_notes: Modify notes
+            write_redactions: Redact map data
+            write_blocks: Create and revoke user blocks
+            consume_messages: Read, update status and delete user messages
+            send_messages: Send private messages to other users
+            openid: Sign in using OpenStreetMap
   schemas:
     APICapabilities:
       type: object

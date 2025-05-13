@@ -1,0 +1,13 @@
+read_prefs: Read user preferences
+write_prefs: Modify user preferences
+write_diary: Create diary entries and comments
+write_api: Modify the map
+write_changeset_comments: Comment on changesets
+read_gpx: Read private GPS traces
+write_gpx: Upload GPS traces
+write_notes: Modify notes
+write_redactions: Redact map data
+write_blocks: Create and revoke user blocks
+consume_messages: Read, update status and delete user messages
+send_messages: Send private messages to other users
+openid: Sign in using OpenStreetMap

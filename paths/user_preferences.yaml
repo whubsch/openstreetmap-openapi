@@ -5,7 +5,7 @@ get:
   description: This endpoint returns all the preferences of a user. The user must be authenticated.
   operationId: getUserPreferences
   security:
-    - oauth2-implementation:
+    - oauth2:
         - read_prefs
   responses:
     200:

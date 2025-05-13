@@ -1,7 +1,7 @@
 summary: Update a changeset
 description: Update a changeset
 security:
-  - oauth2-implementation: []
+  - oauth2: []
 tags:
   - changeset
 parameters:
